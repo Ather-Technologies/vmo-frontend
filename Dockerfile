@@ -1,4 +1,4 @@
-// Everybody loves alpine
+# Everybody loves alpine
 FROM alpine:3.19
 
 # Install dependencies
