@@ -1,10 +1,10 @@
 // Represents a clip date with its associated properties
 export interface ClipDate {
-    id: number; // Unique identifier for the clip date
-    source: string; // The source of the clip date
-    date: string; // The date of the clip in ISO format (YYYY-MM-DD)
-    clipCount: number; // The number of clips associated with this date
-    outageStatus: string; // The status of the outage associated with this clip date
+    id: number; // The DB side id for that row
+    agency: string; // The agency of the clip group i.e. "Sanders County Sheriff's Office"
+    date: string; // Returns ISO format date YYYY-MM-DD
+    clipCount: number; // Number of clips in the group
+    outageStatus: string; // If set this means there was an outage detected on the date    
 }
 
 // Represents a clip with its associated properties
@@ -22,7 +22,15 @@ export interface LoadingScreenProps {
 
 // Represents the properties for the audio player
 export interface AudioPlayerProps {
-    url: string; // The URL of the audio to play
+    setClipKey: React.Dispatch<React.SetStateAction<number>>;
+    clipKey: number;
+}
+
+// Represents the properties for the clips page
+export interface ClipsPageProps {
+    // Function to set the clipKey in the sibling component useState
+    setClipKey: React.Dispatch<React.SetStateAction<number>>;
+    clipKey: number;
 }
 
 // Represents the properties for the pagination component
@@ -30,6 +38,7 @@ export interface PaginationProps {
     setCurrentItems: React.Dispatch<React.SetStateAction<any[]>>; // Function to set the current items
     items: any[]; // The items to paginate
     tableRowRef: React.RefObject<HTMLTableRowElement>; // Reference to the table row element
+    paginationTag?: string | null;
 }
 
 // Represents the properties for the modal component

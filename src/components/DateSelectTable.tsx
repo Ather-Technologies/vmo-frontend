@@ -1,38 +1,19 @@
 "use client"
 
-// Imports
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import LoadingScreen from "./LoadingScreen";
 import Pagination from "./Pagination";
-import { ClipDate } from "../lib/types";
+import { useCookies } from "react-cookie";
+import { ClipDate } from "../lib/types"
+import apiFetch from "../lib/apiFetch";
 
-// Function to fetch clip dates from the API
-async function fetchClipDates() {
-    // Fetching data from the API
-    const response = await fetch(`${process.env.API_HOST}/api/dates`, {
-        headers: {
-            "api-key": process.env.API_KEY ?? "set-api-key-in-dotenv", // Mostly just a development thing will be removed in production
-        }
-    });
-    // Checking if the response is OK
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    // Parsing the response to JSON
-    const data = await response.json();
-    // Checking if the data is in the expected format
-    if (!data || !data["clipDatesJson"]) {
-        throw new Error("Unexpected data structure");
-    }
-    // Returning the clip dates
-    return data["clipDatesJson"];
+interface NavClose {
+    setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// Main component
-function DateSelectTable() {
-    // State for storing the clip dates
+function DateSelectTable(props: NavClose) {
     const [dates, setDates] = useState<ClipDate[]>([]);
     // State for storing the loading status
     const [isLoading, setIsLoading] = useState(true);
@@ -40,16 +21,52 @@ function DateSelectTable() {
     const [currentItems, setCurrentItems] = useState<ClipDate[]>([]);
     // Ref for the table row
     const tableRowRef = useRef<HTMLTableRowElement>(null);
+    // State for storing the date key (id)
+    const [dateKey, setDateKey] = useState(NaN);
 
-    // Fetching the clip dates on component mount
+    const [cookies, setCookie] = useCookies(['dateKey']);
+
     useEffect(() => {
-        fetchClipDates()
-            .then((clipDatesJson) => {
-                // Mapping the data to the ClipDate type
-                const dates: ClipDate[] = clipDatesJson.map((clipDate: any) => ({
+        if (!cookies?.dateKey) {
+            setCookie('dateKey', dateKey, { path: '/' });
+        } else {
+            setDateKey(cookies.dateKey);
+
+            // Add new highlight
+            const row = document.getElementById("vmo-date-" + dateKey?.toString());
+            row?.classList.add("bg-slate-100");
+            row?.classList.add("dark:bg-slate-700");
+        }
+    }, [cookies.dateKey, setCookie, dateKey]);
+
+    const onClick = (_dateKey: number) => {
+        // Remove old highlight
+        const oldRow = document.getElementById("vmo-date-" + dateKey?.toString());
+        oldRow?.classList.remove("bg-slate-100");
+        oldRow?.classList.remove("dark:bg-slate-700");
+
+        // Add new highlight
+        const row = document.getElementById("vmo-date-" + _dateKey?.toString());
+        row?.classList.add("bg-slate-100");
+        row?.classList.add("dark:bg-slate-700");
+
+        // Set the _dateKey in the sibling component useState so the clips table can display the clips for the selected date
+        if (_dateKey) {
+            setDateKey(_dateKey);
+            setCookie('dateKey', _dateKey, { path: '/' });
+        }
+
+        props.setIsExpanded(false);
+    }
+
+    useEffect(() => {
+        // Fetch dates from the database and update the state
+        apiFetch(`/api/dates`)
+            .then((response) => response.json())
+            .then((data) => {
+                const dates: ClipDate[] = data["clipDatesJson"].map((clipDate: any) => ({
                     id: clipDate.id,
-                    source: clipDate.source,
-                    // Formatting the date
+                    agency: clipDate.agency,
                     date: new Date(clipDate.date).toLocaleDateString("en-US", {
                         month: "2-digit",
                         day: "2-digit",
@@ -61,6 +78,9 @@ function DateSelectTable() {
                 // Setting the clip dates and the loading status
                 setDates(dates);
                 setIsLoading(false);
+
+                // Fix pagination by adding at least one item?
+                // setCurrentItems(dates.slice(0, 1));
             })
             .catch((error) => {
                 // Logging any potential error
@@ -77,22 +97,22 @@ function DateSelectTable() {
             <div>
                 <table className="table-auto w-full">
                     <tbody className="bg-white dark:bg-slate-800">
-                        {currentItems.map(({ id, source, date, clipCount, outageStatus }) => (
-                            <tr ref={tableRowRef} key={id}>
+                        {currentItems.map((clipDateData) => (
+                            <tr id={'vmo-date-' + clipDateData.id} onClick={() => onClick(clipDateData.id)} ref={tableRowRef} key={clipDateData.id}>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                                    {source}
+                                    {clipDateData.agency}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                                    {date}
+                                    {clipDateData.date}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                                    {clipCount}
+                                    {clipDateData.clipCount}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                                    {outageStatus === '' ? (
+                                    {clipDateData.outageStatus !== '' ? (
                                         <FontAwesomeIcon icon={faCheckCircle} title="No outages" />
                                     ) : (
-                                        <FontAwesomeIcon icon={faExclamationTriangle} title={outageStatus} />
+                                        <FontAwesomeIcon icon={faExclamationTriangle} title={clipDateData.outageStatus} />
                                     )}
                                 </td>
                             </tr>

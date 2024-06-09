@@ -10,4 +10,4 @@ COPY package.json ./
 RUN npm install
 COPY . .
 
-ENTRYPOINT ["npm", "run", "prod"]
+ENTRYPOINT ["npm", "run", "start"]

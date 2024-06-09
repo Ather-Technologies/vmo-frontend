@@ -13,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({
         /* The modal is centered on the screen using flexbox */
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-10">
             {/* Modal bg and content settings */}
-            <div className={(colorMode == 'light' ? "bg-white text-black" : "bg-gray-900 text-gray-300") + " rounded-lg"}>
+            <div className={(colorMode === 'light' ? "bg-white text-black" : "bg-gray-900 text-gray-300") + " rounded-lg"}>
                 {/* Header */}
                 <div className="bg-gray-700 text-white p-4 rounded-t-lg">
                     {title && <h2>{title}</h2>}
