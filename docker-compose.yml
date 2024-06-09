@@ -1,0 +1,7 @@
+# Example docker-compose file if you were gonna use docker-compose to run the app
+services:
+  frontend:
+    build: .
+    image: vmo-frontend
+    ports:
+      - "3000:3000"
