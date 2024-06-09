@@ -13,7 +13,7 @@ interface NavigationFooterProps {
 
 function DatesNavigation({ clipKey, setClipKey }: NavigationFooterProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [ cookies ] = useCookies(['dateKey']);
+  const [cookies] = useCookies(['dateKey']);
 
   useEffect(() => {
     if (!cookies?.dateKey) {
@@ -31,10 +31,13 @@ function DatesNavigation({ clipKey, setClipKey }: NavigationFooterProps) {
       <div className={`p-4 mw-full flex justify-between items-end bg-gray-900 py-4 ${isExpanded ? '' : 'pb-8'}`}>
         <AudioPlayer clipKey={clipKey} setClipKey={setClipKey} />
         <button className="text-gray-500 text-sm" onClick={handleButtonClick}>
-          {isExpanded ? 'Close' : 'Open'}
+          {
+            isExpanded ? (
+              cookies.dateKey ? 'Close' : 'Please pick a date'
+            ) : 'Open'}
         </button>
       </div>
-        <DateSelectTable setIsExpanded={setIsExpanded} />
+      <DateSelectTable setIsExpanded={setIsExpanded} />
     </div>
   );
 }
