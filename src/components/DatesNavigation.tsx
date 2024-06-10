@@ -1,6 +1,4 @@
-"use client"
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AudioPlayer from './AudioPlayer';
 import DateSelectTable from './DateSelectTable';
 import { useCookies } from 'react-cookie';
