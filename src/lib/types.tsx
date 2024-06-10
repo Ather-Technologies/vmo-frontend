@@ -1,3 +1,5 @@
+import { ReactNode } from "react"; // Reqired type for declaring children prop
+
 // Represents a clip date with its associated properties
 export interface ClipDate {
     id: number; // The DB side id for that row
@@ -20,17 +22,12 @@ export interface LoadingScreenProps {
     loadingText: string; // The text to display while loading
 }
 
-// Represents the properties for the audio player
-export interface AudioPlayerProps {
-    setClipKey: React.Dispatch<React.SetStateAction<number>>;
+// Props for the DatesNavigation component 
+export interface ClipDateStateDataProp {
     clipKey: number;
-}
-
-// Represents the properties for the clips page
-export interface ClipsPageProps {
-    // Function to set the clipKey in the sibling component useState
+    dateKey: number;
     setClipKey: React.Dispatch<React.SetStateAction<number>>;
-    clipKey: number;
+    setDateKey: React.Dispatch<React.SetStateAction<number>>;
 }
 
 // Represents the properties for the pagination component
@@ -42,7 +39,6 @@ export interface PaginationProps {
 }
 
 // Represents the properties for the modal component
-import { ReactNode } from "react"; // Reqired type for declaring children prop
 export interface ModalProps {
     title?: string; // The title of the modal
     colorMode?: string; // The color mode of the modal (e.g., 'light' or 'dark')

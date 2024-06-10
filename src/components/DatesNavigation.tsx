@@ -1,41 +1,41 @@
 import { useState, useEffect } from 'react';
 import AudioPlayer from './AudioPlayer';
 import DateSelectTable from './DateSelectTable';
-import { useCookies } from 'react-cookie';
+import { ClipDateStateDataProp } from '../lib/types';
 
-// NavigationFooterProps with clipKey as a number
-interface NavigationFooterProps {
-  clipKey: number;
-  setClipKey: React.Dispatch<React.SetStateAction<number>>;
+interface DatesNavProp {
+  CDStateData: ClipDateStateDataProp;
 }
 
-function DatesNavigation({ clipKey, setClipKey }: NavigationFooterProps) {
+function DatesNavigation({ CDStateData }: DatesNavProp) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [cookies] = useCookies(['dateKey']);
+
+  // Just doing some shortening because I don't like refactoring everything
+  const dateKey = CDStateData.dateKey;
 
   useEffect(() => {
-    if (!cookies?.dateKey) {
+    if (isNaN(dateKey)) {
       setIsExpanded(true);
     }
-  }, [cookies?.dateKey]);
+  }, [dateKey]);
 
   const handleButtonClick = () => {
-    if (cookies.dateKey)
+    if (!isNaN(dateKey))
       setIsExpanded(!isExpanded);
   };
 
   return (
     <div className={`fixed bottom-0 left-0 w-full bg-scso-color transition-all duration-500 ${isExpanded ? 'h-full' : 'h-16'}`}>
       <div className={`p-4 mw-full flex justify-between items-end bg-gray-900 py-4 ${isExpanded ? '' : 'pb-8'}`}>
-        <AudioPlayer clipKey={clipKey} setClipKey={setClipKey} />
+        <AudioPlayer CDStateData={CDStateData} />
         <button className="text-gray-500 text-sm" onClick={handleButtonClick}>
           {
             isExpanded ? (
-              cookies.dateKey ? 'Close' : 'Please pick a date'
+              dateKey ? 'Close' : 'Please pick a date'
             ) : 'Open'}
         </button>
       </div>
-      <DateSelectTable setIsExpanded={setIsExpanded} />
+      <DateSelectTable CDStateData={CDStateData} setIsExpanded={setIsExpanded} />
     </div>
   );
 }

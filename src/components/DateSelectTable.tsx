@@ -1,19 +1,18 @@
-
-
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import LoadingScreen from "./LoadingScreen";
 import Pagination from "./Pagination";
-import { useCookies } from "react-cookie";
-import { ClipDate } from "../lib/types"
+import { ClipDate } from "../lib/types";
 import apiFetch from "../lib/apiFetch";
+import { ClipDateStateDataProp } from "../lib/types";
 
-interface NavClose {
+interface DSTProps {
     setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    CDStateData: ClipDateStateDataProp;
 }
 
-function DateSelectTable(props: NavClose) {
+function DateSelectTable({CDStateData, setIsExpanded}: DSTProps) {
     const [dates, setDates] = useState<ClipDate[]>([]);
     // State for storing the loading status
     const [isLoading, setIsLoading] = useState(true);
@@ -22,41 +21,32 @@ function DateSelectTable(props: NavClose) {
     // Ref for the table row
     const tableRowRef = useRef<HTMLTableRowElement>(null);
     // State for storing the date key (id)
-    const [dateKey, setDateKey] = useState(NaN);
-
-    const [cookies, setCookie] = useCookies(['dateKey']);
+    const [dateKey, setDateKey] = [CDStateData.dateKey, CDStateData.setDateKey];
 
     useEffect(() => {
-        if (!cookies?.dateKey) {
-            setCookie('dateKey', dateKey, { path: '/' });
-        } else {
-            setDateKey(cookies.dateKey);
-
-            // Add new highlight
-            const row = document.getElementById("vmo-date-" + dateKey?.toString());
-            row?.classList.add("bg-slate-100");
-            row?.classList.add("dark:bg-slate-700");
-        }
-    }, [cookies.dateKey, setCookie, dateKey]);
+        // Add new highlight
+        const row = document.getElementById("vmo-date-" + dateKey.toString());
+        row?.classList.add("bg-slate-100");
+        row?.classList.add("dark:bg-slate-700");
+    }, [dateKey]);
 
     const onClick = (_dateKey: number) => {
         // Remove old highlight
-        const oldRow = document.getElementById("vmo-date-" + dateKey?.toString());
+        const oldRow = document.getElementById("vmo-date-" + dateKey.toString());
         oldRow?.classList.remove("bg-slate-100");
         oldRow?.classList.remove("dark:bg-slate-700");
 
         // Add new highlight
-        const row = document.getElementById("vmo-date-" + _dateKey?.toString());
+        const row = document.getElementById("vmo-date-" + _dateKey.toString());
         row?.classList.add("bg-slate-100");
         row?.classList.add("dark:bg-slate-700");
 
         // Set the _dateKey in the sibling component useState so the clips table can display the clips for the selected date
         if (_dateKey) {
             setDateKey(_dateKey);
-            setCookie('dateKey', _dateKey, { path: '/' });
         }
 
-        props.setIsExpanded(false);
+        setIsExpanded(false);
     }
 
     useEffect(() => {

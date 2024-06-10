@@ -1,20 +1,21 @@
-
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import toast from 'react-hot-toast';
-import { useCookies } from 'react-cookie';
-import { AudioPlayerProps } from '../lib/types';
+import { ClipDateStateDataProp } from '../lib/types';
 
+interface AudioPlayerProp {
+    CDStateData: ClipDateStateDataProp;
+}
 
-function AudioPlayer(audioProps: AudioPlayerProps) {
+function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [, setCookie] = useCookies(['plays_remaining', 'clipKey']);
+    // You know the drill by now
+    const [clipKey, setClipKey] = [CDStateData.clipKey, CDStateData.setClipKey];
 
     const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -32,11 +33,11 @@ function AudioPlayer(audioProps: AudioPlayerProps) {
     // This is the screwed up method to get the next clip key without ignoring clips that were uploaded out of sequence
     const getNextClipKey = useCallback(() => {
         // Get the attribute x-vmo-clipidx from the element with the id vmo-clip-clipKey=props.clipKey
-        const currentIndex = Number(document.getElementById(`vmo-clip-${audioProps.clipKey}`)?.getAttribute('x-vmo-clipidx'));
+        const currentIndex = Number(document.getElementById(`vmo-clip-${clipKey}`)?.getAttribute('x-vmo-clipidx'));
 
         // Get the element with the attribute x-vmo-clipidx=currentIndex-1
         return Number(document.querySelector(`[x-vmo-clipidx="${currentIndex - 1}"]`)?.id.split('-')[2]);
-    }, [audioProps.clipKey]);
+    }, [clipKey]);
 
     // This means the audio has ended
     const handleEnd = useCallback(() => {
@@ -47,18 +48,17 @@ function AudioPlayer(audioProps: AudioPlayerProps) {
         // If next clip exists, play it
         if (true) {
             // Remove old highlight
-            const oldRow = document.getElementById(`vmo-clip-${audioProps.clipKey}`);
+            const oldRow = document.getElementById(`vmo-clip-${clipKey}`);
             oldRow?.classList.remove("bg-slate-100");
             oldRow?.classList.remove("dark:bg-slate-700");
 
             // Make it blue!
-            audioProps.setClipKey(nextClipKey);
-            setCookie('clipKey', nextClipKey, { path: '/' });
+            setClipKey(nextClipKey);
         } else {
             // Handle page change or something idk make this idiot work somehow or I'm gonna lose it
-            console.log('You unrelenting pain in my ass.', (audioProps.clipKey), `vmo-clip-${nextClipKey}`);
+            console.log('You unrelenting pain in my ass.', (clipKey), `vmo-clip-${nextClipKey}`);
         }
-    }, [audioProps, getNextClipKey, setIsPlaying, setCookie]);
+    }, [clipKey, setClipKey, getNextClipKey, setIsPlaying]);
 
     const handleTimeUpdate: any = () => {
         if (audioRef.current) {
@@ -84,7 +84,7 @@ function AudioPlayer(audioProps: AudioPlayerProps) {
     //     // Remove url params
     //     window.history.replaceState({}, document.title, window.location.pathname);
 
-    // }, [audioProps.clipKey]);
+    // }, [clipKey]);
 
     const handleLoadedMetadata = () => {
         if (audioRef.current) {
@@ -100,8 +100,8 @@ function AudioPlayer(audioProps: AudioPlayerProps) {
             const clickPosition = event.nativeEvent.offsetX;
             const seekTime = (clickPosition / barWidth) * audioRef.current.duration;
             if (isFinite(seekTime))
-                audioRef.current.currentTime = seekTime 
-            else 
+                audioRef.current.currentTime = seekTime
+            else
                 audioRef.current.currentTime = NaN;
             setCurrentTime(seekTime);
         }
@@ -157,7 +157,7 @@ function AudioPlayer(audioProps: AudioPlayerProps) {
             <audio
                 autoPlay
                 ref={audioRef}
-                src={audioProps.clipKey ? `/api/clips/audio/${audioProps.clipKey}` : ""}
+                src={clipKey ? `/api/clips/audio/${clipKey}` : ""}
                 onEnded={() => handleEnd()}
             ></audio>
         </div>
