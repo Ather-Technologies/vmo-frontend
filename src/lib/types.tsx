@@ -3,18 +3,22 @@ import { ReactNode } from "react"; // Reqired type for declaring children prop
 // Represents a clip date with its associated properties
 export interface ClipDate {
     id: number; // The DB side id for that row
-    agency: string; // The agency of the clip group i.e. "Sanders County Sheriff's Office"
-    date: string; // Returns ISO format date YYYY-MM-DD
-    clipCount: number; // Number of clips in the group
-    outageStatus: string; // If set this means there was an outage detected on the date    
+    date: string; // ISO format date YYYY-MM-DD
+    source_id: number; // The source_id of the clip
 }
 
 // Represents a clip with its associated properties
 export interface Clip {
     id: number; // Unique identifier for the clip
-    source: string; // The source of the clip, e.g., "Sanders County Sheriff's Office"
-    date: string; // The date of the clip in ISO format (YYYY-MM-DD)
     time: string; // The time the clip was uploaded
+    date_id: number; // The date_id of a row with the date of the clip in ISO format (YYYY-MM-DD)
+}
+
+export interface ClipSource {
+    id: number // Unique identifier for the source
+    name: string // The name of the source
+    shorthand: string // Abbreviation of the source name
+    timezone: string // The IANA timezone of the source (e.g., 'America/New_York')
 }
 
 // Represents the properties for the loading screen
