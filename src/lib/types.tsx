@@ -24,10 +24,10 @@ export interface LoadingScreenProps {
 
 // Props for the DatesNavigation component 
 export interface ClipDateStateDataProp {
-    clipKey: number;
-    dateKey: number;
-    setClipKey: React.Dispatch<React.SetStateAction<number>>;
-    setDateKey: React.Dispatch<React.SetStateAction<number>>;
+    clip_id: number;
+    date_id: number;
+    setClipID: React.Dispatch<React.SetStateAction<number>>;
+    setDateID: React.Dispatch<React.SetStateAction<number>>;
 }
 
 // Represents the properties for the pagination component

@@ -15,7 +15,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     const [isLoading, setIsLoading] = useState(true);
 
     // You know the drill by now
-    const [clipKey, setClipKey] = [CDStateData.clipKey, CDStateData.setClipKey];
+    const [clip_id, setClipID] = [CDStateData.clip_id, CDStateData.setClipID];
 
     const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -32,12 +32,12 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     // This is the screwed up method to get the next clip key without ignoring clips that were uploaded out of sequence
     const getNextClipKey = useCallback(() => {
-        // Get the attribute x-vmo-clipidx from the element with the id vmo-clip-clipKey=props.clipKey
-        const currentIndex = Number(document.getElementById(`vmo-clip-${clipKey}`)?.getAttribute('x-vmo-clipidx'));
+        // Get the attribute x-vmo-clipidx from the element with the id vmo-clip-clip_id=props.clip_id
+        const currentIndex = Number(document.getElementById(`vmo-clip-${clip_id}`)?.getAttribute('x-vmo-clipidx'));
 
         // Get the element with the attribute x-vmo-clipidx=currentIndex-1
         return Number(document.querySelector(`[x-vmo-clipidx="${currentIndex - 1}"]`)?.id.split('-')[2]);
-    }, [clipKey]);
+    }, [clip_id]);
 
     // This means the audio has ended
     const handleEnd = useCallback(() => {
@@ -48,17 +48,17 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
         // If next clip exists, play it
         if (true) {
             // Remove old highlight
-            const oldRow = document.getElementById(`vmo-clip-${clipKey}`);
+            const oldRow = document.getElementById(`vmo-clip-${clip_id}`);
             oldRow?.classList.remove("bg-slate-100");
             oldRow?.classList.remove("dark:bg-slate-700");
 
             // Make it blue!
-            setClipKey(nextClipKey);
+            setClipID(nextClipKey);
         } else {
             // Handle page change or something idk make this idiot work somehow or I'm gonna lose it
-            console.log('You unrelenting pain in my ass.', (clipKey), `vmo-clip-${nextClipKey}`);
+            console.log('You unrelenting pain in my ass.', (clip_id), `vmo-clip-${nextClipKey}`);
         }
-    }, [clipKey, setClipKey, getNextClipKey, setIsPlaying]);
+    }, [clip_id, setClipID, getNextClipKey, setIsPlaying]);
 
     const handleTimeUpdate: any = () => {
         if (audioRef.current) {
@@ -84,7 +84,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     //     // Remove url params
     //     window.history.replaceState({}, document.title, window.location.pathname);
 
-    // }, [clipKey]);
+    // }, [clip_id]);
 
     const handleLoadedMetadata = () => {
         if (audioRef.current) {
@@ -157,7 +157,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             <audio
                 autoPlay
                 ref={audioRef}
-                src={clipKey ? `/api/clips/audio/${clipKey}` : ""}
+                src={clip_id ? `/api/clips/audio/${clip_id}` : ""}
                 onEnded={() => handleEnd()}
             ></audio>
         </div>

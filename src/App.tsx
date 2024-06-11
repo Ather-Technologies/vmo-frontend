@@ -8,23 +8,23 @@ import { ClipDateStateDataProp } from './lib/types';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
-  const [clipKey, setClipKey] = useState(NaN);
-  const [dateKey, setDateKey] = useState(NaN);
-  const CDStateData: ClipDateStateDataProp = { clipKey, dateKey, setClipKey, setDateKey };
+  const [clip_id, setClipID] = useState(NaN);
+  const [date_id, setDateID] = useState(NaN);
+  const CDStateData: ClipDateStateDataProp = { clip_id: clip_id, date_id: date_id, setClipID, setDateID };
 
-  // const [cookies, setCookie, removeCookie] = useCookies(['clipKey', 'plays_remaining']);
+  // const [cookies, setCookie, removeCookie] = useCookies(['clip_id', 'plays_remaining']);
 
   // useEffect(() => {
-  //   if (!cookies?.clipKey) {
-  //     setCookie('clipKey', clipKey, { path: '/' });
+  //   if (!cookies?.clip_id) {
+  //     setCookie('clip_id', clip_id, { path: '/' });
   //     // No clip send to dashboard?
   //   } else {
-  //     setClipKey(cookies.clipKey);
+  //     setClipID(cookies.clip_id);
   //   }
 
   //   // Remove plays_remaining cookie
   //   removeCookie('plays_remaining', { path: '/' });
-  // }, [cookies.clipKey, setCookie, clipKey, removeCookie]);
+  // }, [cookies.clip_id, setCookie, clip_id, removeCookie]);
 
   useEffect(() => {
     setIsLoading(false);

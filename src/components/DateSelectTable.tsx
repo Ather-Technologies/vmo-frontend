@@ -4,7 +4,7 @@ import { faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-sv
 import LoadingScreen from "./LoadingScreen";
 import Pagination from "./Pagination";
 import { ClipDate } from "../lib/types";
-import apiFetch from "../lib/apiFetch";
+import apiFetch from "../lib/APIInterface";
 import { ClipDateStateDataProp } from "../lib/types";
 
 interface DSTProps {
@@ -21,18 +21,18 @@ function DateSelectTable({CDStateData, setIsExpanded}: DSTProps) {
     // Ref for the table row
     const tableRowRef = useRef<HTMLTableRowElement>(null);
     // State for storing the date key (id)
-    const [dateKey, setDateKey] = [CDStateData.dateKey, CDStateData.setDateKey];
+    const [date_id, setDateID] = [CDStateData.date_id, CDStateData.setDateID];
 
     useEffect(() => {
         // Add new highlight
-        const row = document.getElementById("vmo-date-" + dateKey.toString());
+        const row = document.getElementById("vmo-date-" + date_id.toString());
         row?.classList.add("bg-slate-100");
         row?.classList.add("dark:bg-slate-700");
-    }, [dateKey]);
+    }, [date_id]);
 
     const onClick = (_dateKey: number) => {
         // Remove old highlight
-        const oldRow = document.getElementById("vmo-date-" + dateKey.toString());
+        const oldRow = document.getElementById("vmo-date-" + date_id.toString());
         oldRow?.classList.remove("bg-slate-100");
         oldRow?.classList.remove("dark:bg-slate-700");
 
@@ -43,7 +43,7 @@ function DateSelectTable({CDStateData, setIsExpanded}: DSTProps) {
 
         // Set the _dateKey in the sibling component useState so the clips table can display the clips for the selected date
         if (_dateKey) {
-            setDateKey(_dateKey);
+            setDateID(_dateKey);
         }
 
         setIsExpanded(false);

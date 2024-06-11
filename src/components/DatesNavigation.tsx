@@ -11,16 +11,16 @@ function DatesNavigation({ CDStateData }: DatesNavProp) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Just doing some shortening because I don't like refactoring everything
-  const dateKey = CDStateData.dateKey;
+  const date_id = CDStateData.date_id;
 
   useEffect(() => {
-    if (isNaN(dateKey)) {
+    if (isNaN(date_id)) {
       setIsExpanded(true);
     }
-  }, [dateKey]);
+  }, [date_id]);
 
   const handleButtonClick = () => {
-    if (!isNaN(dateKey))
+    if (!isNaN(date_id))
       setIsExpanded(!isExpanded);
   };
 
@@ -31,7 +31,7 @@ function DatesNavigation({ CDStateData }: DatesNavProp) {
         <button className="text-gray-500 text-sm" onClick={handleButtonClick}>
           {
             isExpanded ? (
-              dateKey ? 'Close' : 'Please pick a date'
+              date_id ? 'Close' : 'Please pick a date'
             ) : 'Open'}
         </button>
       </div>
