@@ -76,30 +76,26 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
 
     return (
         <div className="flex justify-between items-center mt-4 mx-4 mb-4">
-            <span id="x-vmo-pagination" x-vmo-ptag={paginationTag} x-vmo-itemsperpage={itemsPerPage} className="pr-4 text-sm text-gray-700 dark:text-gray-400">
-                {items.length > 0 ? (
-                    <>
-                        <div className="text-sm text-gray-700 dark:text-gray-400">
-                            Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, items.length)} of {items.length} entries
-                        </div>
-                        <ul className="flex">
-                            <li className="mr-2">
+        {items.length > 0 ? (
+            <>
+                <div className="text-sm text-gray-700 dark:text-gray-400">
+                    Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, items.length)} of {items.length} entries
+                </div>
+                <ul className="flex">
+                    <li className="mr-2">
                                 <span id="x-vmo-pagination" x-vmo-ptag={paginationTag} x-vmo-itemsperpage={itemsPerPage} className="pl-4 text-sm text-gray-700 dark:text-gray-400">
-                                    Page {currentPage} of {totalPages}
-                                </span>
-                                <ul className="flex">
-                                    {renderPageNumbers()}
-                                </ul>
-                            </li>
-                        </ul>
-                    </>
-                ) : (
-                    <div className="text-sm text-gray-700 dark:text-gray-400">
-                        There are no elements to display.
-                    </div>
-                )}
-            </span>
-        </div>
+                            Page {currentPage} of {totalPages}
+                        </span>
+                    </li>
+                    {renderPageNumbers()}
+                </ul>
+            </>
+        ) : (
+            <div className="text-sm text-gray-700 dark:text-gray-400">
+                There are no elements to display.
+            </div>
+        )}
+    </div>
     );
 }
 
