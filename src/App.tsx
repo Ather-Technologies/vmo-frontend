@@ -3,14 +3,33 @@ import DatesNavigation from './components/DatesNavigation'; // Corrected import
 import LoadingScreen from './components/LoadingScreen';
 import ClipsPage from './components/ClipsPage';
 import { Toaster } from 'react-hot-toast';
-import { ClipDateStateDataProp } from './lib/types';
+import { ClipDateStateDataProp, FullClipDate } from './lib/types';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [clip_id, setClipID] = useState(NaN);
   const [date_id, setDateID] = useState(NaN);
-  const CDStateData: ClipDateStateDataProp = { clip_id: clip_id, date_id: date_id, setClipID, setDateID };
+  const [selectedDateFullData, setSelectedDateFullData] = useState<FullClipDate>({
+    id: NaN,
+    date: '???',
+    source: {
+      id: NaN,
+      name: '???',
+      shorthand: '???',
+      timezone: '???'
+    }
+  });
+
+  // Object to pass to the ClipsPage and DatesNavigation and other child components
+  const CDStateData: ClipDateStateDataProp = {
+    clip_id,
+    date_id,
+    setClipID,
+    setDateID,
+    selectedDateFullData, // This is the row data for the selected date from the DB
+    setSelectedDateFullData // This is the setter for the selectedDateFullData
+  };
 
   // const [cookies, setCookie, removeCookie] = useCookies(['clip_id', 'plays_remaining']);
 

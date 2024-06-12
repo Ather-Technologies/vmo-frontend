@@ -88,7 +88,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                         {currentItems.map((clip, index) => (
                             <tr id={`vmo-clip-${clip.id}`} x-vmo-clipidx={index} onClick={() => onClick(clip?.id)} ref={tableRowRef} key={clip.id}>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                                    {'SCSO'/* clip.date_id  source shorthand here */}
+                                    {CDStateData.selectedDateFullData.source.shorthand}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
                                     {'06/10/24'/* clip.date_id  date here */}

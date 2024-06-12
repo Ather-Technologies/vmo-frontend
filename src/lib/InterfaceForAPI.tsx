@@ -1,4 +1,4 @@
-import { ClipDate, Clip } from './types';
+import { ClipDate, Clip, FullClipDate } from './types';
 
 // Interface for standardizing API calls
 export default class API_Interface {
@@ -9,6 +9,10 @@ export default class API_Interface {
 
     // TO:DO: ---------- Impliment state storage for the actual date object including the whole source object.
 
+    // Fetch fulll data from db with the date_id
+    getFullDateFromDateID = async (dateId: number): Promise<FullClipDate> =>
+        (await this.makeApiFetch(`/dates/one/date_id/${dateId}`))?.date;
+    
     // Fetch all the clips with the date_id
     getAllClipsByDateId = async (dateId: number): Promise<Clip[]> =>
         await this.makeApiFetch(`/clips/many/date_id/${dateId}`);

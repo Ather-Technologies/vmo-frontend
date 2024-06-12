@@ -7,6 +7,12 @@ export interface ClipDate {
     source_id: number; // The source_id of the clip
 }
 
+export interface FullClipDate {
+    id: number; // The DB side id for that row
+    date: string; // ISO format date YYYY-MM-DD
+    source: ClipSource; // The source object
+}
+
 // Represents a clip with its associated properties
 export interface Clip {
     id: number; // Unique identifier for the clip
@@ -26,10 +32,12 @@ export interface LoadingScreenProps {
     loadingText: string; // The text to display while loading
 }
 
-// Props for the DatesNavigation component 
+// Props for passing clip and date state data to child components 
 export interface ClipDateStateDataProp {
     clip_id: number;
     date_id: number;
+    selectedDateFullData: FullClipDate;
+    setSelectedDateFullData: React.Dispatch<React.SetStateAction<FullClipDate>>;
     setClipID: React.Dispatch<React.SetStateAction<number>>;
     setDateID: React.Dispatch<React.SetStateAction<number>>;
 }
