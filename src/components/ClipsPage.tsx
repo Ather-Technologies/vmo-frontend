@@ -91,7 +91,8 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                                     {CDStateData.selectedDateFullData.source.shorthand}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                                    {'06/10/24'/* clip.date_id  date here */}
+                                    {new Date(CDStateData.selectedDateFullData.date).toLocaleDateString('en-US',
+                                        { month: '2-digit', day: '2-digit', year: '2-digit' })}
                                 </td>
                                 <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
                                     {clip.time}

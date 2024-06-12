@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import DatesNavigation from './components/DatesNavigation'; // Corrected import
 import LoadingScreen from './components/LoadingScreen';
 import ClipsPage from './components/ClipsPage';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { ClipDateStateDataProp, FullClipDate } from './lib/types';
 
 function App() {
@@ -31,22 +31,9 @@ function App() {
     setSelectedDateFullData // This is the setter for the selectedDateFullData
   };
 
-  // const [cookies, setCookie, removeCookie] = useCookies(['clip_id', 'plays_remaining']);
-
-  // useEffect(() => {
-  //   if (!cookies?.clip_id) {
-  //     setCookie('clip_id', clip_id, { path: '/' });
-  //     // No clip send to dashboard?
-  //   } else {
-  //     setClipID(cookies.clip_id);
-  //   }
-
-  //   // Remove plays_remaining cookie
-  //   removeCookie('plays_remaining', { path: '/' });
-  // }, [cookies.clip_id, setCookie, clip_id, removeCookie]);
-
   useEffect(() => {
     setIsLoading(false);
+    if (process.env.REACT_APP_DEMO) toast.error('Please note this is a DEMO and will be non-functional but is a proof of concept.');
   }, []);
 
   return (

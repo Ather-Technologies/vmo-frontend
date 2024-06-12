@@ -1,4 +1,5 @@
 import { ClipDate, Clip, FullClipDate } from './types';
+import { InterfaceForAPI_DemoData } from './DemoData';
 
 // Interface for standardizing API calls
 export default class API_Interface {
@@ -11,15 +12,15 @@ export default class API_Interface {
 
     // Fetch fulll data from db with the date_id
     getFullDateFromDateID = async (dateId: number): Promise<FullClipDate> =>
-        (await this.makeApiFetch(`/dates/one/date_id/${dateId}`))?.date;
-    
+        process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getFullDateFromDateID(dateId) : (await this.makeApiFetch(`/dates/one/date_id/${dateId}`))?.date;
+
     // Fetch all the clips with the date_id
     getAllClipsByDateId = async (dateId: number): Promise<Clip[]> =>
-        await this.makeApiFetch(`/clips/many/date_id/${dateId}`);
+        process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getAllClipsByDateId(dateId) : (await this.makeApiFetch(`/clips/many/date_id/${dateId}`));
 
     // Fetch all dates that have a source id of sourceId.
     getAllDatesBySourceId = async (sourceId: number): Promise<ClipDate[]> =>
-        await this.makeApiFetch(`/dates/many/source_id/${sourceId}`);
+        process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getAllDatesBySourceId(sourceId) : (await this.makeApiFetch(`/dates/many/source_id/${sourceId}`));
 
     async makeApiFetch(url: string): Promise<any> {
         const result = await fetch(`${process.env.REACT_APP_API_HOST}/api${url}`, {
@@ -34,6 +35,8 @@ export default class API_Interface {
 
         // Parse the result as JSON
         const json = await result.json();
+
+        console.log(json);
 
         // cast the result as an array of Clip objects
         return json;

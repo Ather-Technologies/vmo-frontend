@@ -46,74 +46,71 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
 
         // Set the _dateKey in the sibling component useState so the clips table can display the clips for the selected date
         if (newDate_id) {
-            apiInterface.getFullDateFromDateID(newDate_id).then((date) => {
-                CDStateData.setSelectedDateFullData(date);
-                console.log(date);
-        });
-        setDateID(newDate_id);
+            apiInterface.getFullDateFromDateID(newDate_id).then((date) => CDStateData.setSelectedDateFullData(date));
+            setDateID(newDate_id);
+        }
 
+        setIsExpanded(false);
     }
 
-    setIsExpanded(false);
-}
+    useEffect(() => {
+        const fetchDatesFromAPI = async () => {
+            // Get all dates by source id
+            const datesData = await apiInterface.getAllDatesBySourceId(1); // ----------------- TO:DO not hard code this way later on when I get multi source clips going.
 
-useEffect(() => {
-    const fetchDatesFromAPI = async () => {
-        // Get all dates by source id
-        const datesData = await apiInterface.getAllDatesBySourceId(1); // ----------------- TO:DO not hard code this way later on when I get multi source clips going.
-        // Convert dates to locale format
-        const formattedDates = datesData.map((dateData) => {
-            const date = new Date(dateData.date);
-            const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
-            return { ...dateData, date: formattedDate };
-        });
+            // Convert dates to locale format
+            const formattedDates = datesData.map((dateData) => {
+                const date = new Date(dateData.date);
+                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
+                return { ...dateData, date: formattedDate };
+            });
 
-        setClipDates(formattedDates);
-        setIsLoading(false);
+            setClipDates(formattedDates);
+            setIsLoading(false);
 
-        // Fix pagination by adding at least one item?
-        // setCurrentItems(dates.slice(0, 1));
+            // Fix pagination by adding at least one item?
+            // setCurrentItems(dates.slice(0, 1));
+        }
+
+        // Fetch the dates from the API
+        fetchDatesFromAPI();
+    }, [apiInterface]);
+
+    // If loading, return the loading screen
+    if (isLoading) {
+        return <LoadingScreen loadingText="Loading dates..." />;
+    } else {
+        // Render the table with the clip dates and the pagination
+        return (
+            <div>
+                <table className="table-auto w-full">
+                    <tbody className="bg-white dark:bg-slate-800">
+                        {currentItems.map((clipDateData) => (
+                            <tr id={'vmo-date-' + clipDateData.id} onClick={() => onClick(clipDateData.id)} ref={tableRowRef} key={clipDateData.id}>
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    {/* CDStateData.selectedDateFullData.source.name er somthin */"Sanders County Sheriff's Office"}
+                                </td>
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                                    {clipDateData.date}
+                                </td>
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
+                                    {clipDateData.id + " Clip"}
+                                </td>
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
+                                    {true ? ( // -------------------- This also needs to be fixed later with dynamic lookup of outage status preferably sent with dates from the API
+                                        <FontAwesomeIcon icon={faCheckCircle} title="No outages" />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faExclamationTriangle} title={'Yeah there was an outage.'} />
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <Pagination items={clipDates} tableRowRef={tableRowRef} setCurrentItems={setCurrentItems} />
+            </div>
+        );
     }
-
-    // Fetch the dates from the API
-    fetchDatesFromAPI();
-}, [apiInterface]);
-
-// If loading, return the loading screen
-if (isLoading) {
-    return <LoadingScreen loadingText="Loading dates..." />;
-} else {
-    // Render the table with the clip dates and the pagination
-    return (
-        <div>
-            <table className="table-auto w-full">
-                <tbody className="bg-white dark:bg-slate-800">
-                    {currentItems.map((clipDateData) => ( // ---------------- Remove all hardcoded elements with a state stored date->source object later when I'm not tired
-                        <tr id={'vmo-date-' + clipDateData.id} onClick={() => onClick(clipDateData.id)} ref={tableRowRef} key={clipDateData.id}>
-                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                                {CDStateData.selectedDateFullData.source.name}
-                            </td>
-                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                                {clipDateData.date}
-                            </td>
-                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                                {clipDateData.id + " Clip"}
-                            </td>
-                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                                {true ? ( // -------------------- This also needs to be fixed later with dynamic lookup of outage status preferably sent with dates from the API
-                                    <FontAwesomeIcon icon={faCheckCircle} title="No outages" />
-                                ) : (
-                                    <FontAwesomeIcon icon={faExclamationTriangle} title={'Yeah there was an outage.'} />
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <Pagination items={clipDates} tableRowRef={tableRowRef} setCurrentItems={setCurrentItems} />
-        </div>
-    );
-}
 }
 
 // Exporting the component
