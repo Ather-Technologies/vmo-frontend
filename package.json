@@ -15,7 +15,7 @@
     "web-vitals": "^4.1.1"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "export REACT_APP_DEMO=yup && npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
