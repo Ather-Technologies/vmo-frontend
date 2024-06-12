@@ -3,14 +3,12 @@
 
 
 
-import { useCookies } from "react-cookie";
 import { useEffect, useState } from 'react';
 import { toast } from "react-hot-toast";
 
 export function FloatingMenu() {
     const [open, setOpen] = useState(false);
     const toggleSideBar = () => setOpen(!open);
-    const [ cookies, setCookie, removeCookie ] = useCookies(['plays_remaining']);
 
     // If the url param m is set, open the menu on load
     useEffect(() => {
@@ -19,7 +17,7 @@ export function FloatingMenu() {
         }
 
         if (window.location.search.includes('p=1')) {
-            removeCookie('plays_remaining');
+            // removeCookie('plays_remaining');
 
             toast('Thank you for your subscription!', {
                 icon: '❤️',
