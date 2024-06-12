@@ -11,7 +11,6 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
             const containerHeight = window.innerHeight;
             const rowHeight = tableRow.clientHeight;
             let numRows = Math.floor(containerHeight / rowHeight) - 2; // Subtract 2 rows for a margin
-            console.log(numRows);
 
             setItemsPerPage(numRows <= items.length ? numRows : items.length);
         }
