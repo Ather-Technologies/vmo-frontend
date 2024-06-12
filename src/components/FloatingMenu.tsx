@@ -3,37 +3,37 @@
 
 
 
-import { useEffect, useState } from 'react';
-import { toast } from "react-hot-toast";
+import { useState } from 'react';
+// import { toast } from "react-hot-toast";
 
 export function FloatingMenu() {
     const [open, setOpen] = useState(false);
     const toggleSideBar = () => setOpen(!open);
 
-    // If the url param m is set, open the menu on load
-    useEffect(() => {
-        if (window.location.search.includes('m=1')) {
-            setOpen(true);
-        }
+    // // If the url param m is set, open the menu on load
+    // useEffect(() => {
+    //     if (window.location.search.includes('m=1')) {
+    //         setOpen(true);
+    //     }
 
-        if (window.location.search.includes('p=1')) {
-            // removeCookie('plays_remaining');
+    //     if (window.location.search.includes('p=1')) {
+    //         // removeCookie('plays_remaining');
 
-            toast('Thank you for your subscription!', {
-                icon: '❤️',
-            });
-        }
+    //         toast('Thank you for your subscription!', {
+    //             icon: '❤️',
+    //         });
+    //     }
 
-        // Remove url params
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }, []);
+    //     // Remove url params
+    //     window.history.replaceState({}, document.title, window.location.pathname);
+    // }, []);
 
     const handleRedirect = (link: string) => {
         window.location.href = link;
     }
 
     return (
-        <div className='w-8 h-8'>
+        <div className='w-8 h-8 w-full bg-navcolor'>
             <button onClick={toggleSideBar}>
                 <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -57,8 +57,8 @@ export function FloatingMenu() {
                         <p>{`Welcome, {name}!`}</p>
 
                         <div className='mt-4'>
-                            <button className='p-4 w-full text-white bg-emerald-800' onClick={() => handleRedirect(`/api/user/{email}/subscription/access`)}>Manage your subscription</button>
-                            <button className='p-4 mt-2 w-full text-white bg-emerald-500' onClick={() => handleRedirect('https://athr.dev/#contact')}>Contact Us</button>
+                            {/* <button className='p-4 w-full text-white bg-emerald-800' onClick={() => handleRedirect(`/api/user/{email}/subscription/access`)}>Manage your subscription</button> */}
+                            <button className='p-4 mt-2 w-full text-white bg-emerald-500' onClick={() => handleRedirect('https://athr.dev/contact/')}>Contact Us</button>
                             <button className='p-4 mt-2 w-full text-white bg-blue-500' onClick={() => handleRedirect('/api/auth/signout')}>Logout</button>
                         </div>
                     </div>

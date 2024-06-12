@@ -4,6 +4,7 @@ import LoadingScreen from './components/LoadingScreen';
 import ClipsPage from './components/ClipsPage';
 import { Toaster, toast } from 'react-hot-toast';
 import { ClipDateStateDataProp, FullClipDate } from './lib/types';
+import FloatingMenu from './components/FloatingMenu';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +41,8 @@ function App() {
     <main className='overflow-hidden'>
       {
         isLoading ? <LoadingScreen loadingText='Loading...' /> : <>
-          { /*<FloatingMenu />  Haha not right now lol*/}
+          <FloatingMenu />
+          {/* <NavigationHeader /> */}
           <ClipsPage CDStateData={CDStateData} />
           <DatesNavigation CDStateData={CDStateData} />
         </>

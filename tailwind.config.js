@@ -5,9 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'main': "url('/bg-main.webp')",
-      },
+      backgroundColor: {
+        'navcolor': '#1d4736'
+      }
     },
   },
   plugins: [require('tailwindcss-safe-area')],
