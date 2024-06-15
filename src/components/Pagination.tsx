@@ -67,12 +67,12 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
         <div className="flex justify-between items-center mt-4 mx-4 mb-4">
             {items.length > 0 ? (
                 <>
-                    <div className="text-sm text-gray-700 dark:text-gray-400">
+                    <div className="text-sm">
                         Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, items.length)} of {items.length} entries
                     </div>
                     <ul className="flex">
                         <li className="mr-2">
-                            <span id="x-vmo-pagination" x-vmo-ptag={paginationTag} x-vmo-itemsperpage={itemsPerPage} className="pl-4 text-sm text-gray-700 dark:text-gray-400">
+                            <span id="x-vmo-pagination" x-vmo-ptag={paginationTag} x-vmo-itemsperpage={itemsPerPage} className="pl-4 text-sm">
                                 Page {currentPage} of {totalPages}
                             </span>
                         </li>
@@ -80,7 +80,7 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
                     </ul>
                 </>
             ) : (
-                <div className="text-sm text-gray-700 dark:text-gray-400">
+                <div className="text-sm">
                     There are no elements to display.
                 </div>
             )}

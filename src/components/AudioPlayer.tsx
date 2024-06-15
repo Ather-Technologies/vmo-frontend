@@ -136,13 +136,13 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     return (
         <div className="flex items-center">
             {isLoading ? (
-                <div className="mr-2 text-gray-500">
+                <div className="mr-2">
                     <div className="animate-spin origin-center">
                         <FontAwesomeIcon icon={faSpinner} />
                     </div>
                 </div>
             ) : (
-                <button className="mr-2 text-gray-500" onClick={togglePlay}>
+                <button className="mr-2" onClick={togglePlay}>
                     <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
                 </button>
             )}
@@ -150,7 +150,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
                 <div className="bg-gray-400 h-2 w-32 mr-2" onClick={handleSeek}>
                     <div className="bg-gradient-to-r from-sky-500 to-indigo-800 h-full w-1/3" style={{ width: `${currentTime === 0 ? 0 : (currentTime / duration) * 100}%` }}></div>
                 </div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-sm">
                     {`${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')} / ${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`}
                 </p>
             </div>

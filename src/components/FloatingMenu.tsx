@@ -52,7 +52,7 @@ export function FloatingMenu() {
             </button>
             <div className={`transition-all duration-500 h-screen fixed z-10 ${open ? 'left-0 w-80' : '-left-80 w-80'}`}>
                 {
-                    <div className='text-lg bg-gray-900 text-gray-700 dark:text-gray-400 p-4'>
+                    <div className='text-lg bg-gray-900 p-4'>
                         <h1 className='text-xl border-b border-gray-700'>Menu</h1>
                         <p>{`Welcome, {name}!`}</p>
 

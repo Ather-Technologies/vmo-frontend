@@ -6,7 +6,7 @@ function LoadingScreen({ loadingText }: LoadingScreenProps) {
       <div className="m-auto">
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-700"></div>
-          <p className="mt-4 text-gray-700 font-bold text-xl">{loadingText}</p>
+          <p className="mt-4 font-bold text-xl">{loadingText}</p>
         </div>
       </div>
     </div>

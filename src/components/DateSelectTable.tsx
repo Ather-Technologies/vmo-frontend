@@ -87,16 +87,16 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
                     <tbody className="bg-white dark:bg-slate-800">
                         {currentItems.map((clipDateData) => (
                             <tr id={'vmo-date-' + clipDateData.id} onClick={() => onClick(clipDateData.id)} ref={tableRowRef} key={clipDateData.id}>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8">
                                     {/* CDStateData.selectedDateFullData.source.name er somthin */"Sanders County Sheriff's Office"}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4">
                                     {clipDateData.date}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8">
                                     {clipDateData.id + " Clip"}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
+                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8">
                                     {true ? ( // -------------------- This also needs to be fixed later with dynamic lookup of outage status preferably sent with dates from the API
                                         <FontAwesomeIcon icon={faCheckCircle} title="No outages" />
                                     ) : (
