@@ -5,10 +5,15 @@ import ClipsPage from './components/ClipsPage';
 import { Toaster, toast } from 'react-hot-toast';
 import { ClipDateStateDataProp, FullClipDate } from './lib/types';
 import FloatingMenu from './components/FloatingMenu';
+import LoginAndRegistration from './components/LoginAndRegistration';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
+  // For authentication
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // For the clip and date ID states and such
   const [clip_id, setClipID] = useState(NaN);
   const [date_id, setDateID] = useState(NaN);
   const [selectedDateFullData, setSelectedDateFullData] = useState<FullClipDate>({
@@ -37,15 +42,25 @@ function App() {
     if (process.env.REACT_APP_DEMO) toast.error('Please note this is a DEMO and will be non-functional but is a proof of concept.');
   }, []);
 
+  const doAuth = (): JSX.Element | boolean => {
+    if (isAuthenticated) return true; // Aw-thenticated!
+    // Not authenticated!
+    return false;
+  };
+
   return (
     <main className='overflow-hidden'>
       {
-        isLoading ? <LoadingScreen loadingText='Loading...' /> : <>
-          <FloatingMenu />
-          {/* <NavigationHeader /> */}
-          <ClipsPage CDStateData={CDStateData} />
-          <DatesNavigation CDStateData={CDStateData} />
-        </>
+        // If not authenticated show the login and registration page
+        doAuth() === true ? (
+          isLoading ? <LoadingScreen loadingText='Loading...' /> : <>
+            <FloatingMenu />
+            {/* <NavigationHeader /> */}
+            <ClipsPage CDStateData={CDStateData} />
+            <DatesNavigation CDStateData={CDStateData} />
+          </>
+        ) : <LoginAndRegistration setAuthState={setIsAuthenticated} />
+
       }
       <Toaster
         position='top-center'
