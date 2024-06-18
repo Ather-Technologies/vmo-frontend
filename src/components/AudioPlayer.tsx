@@ -157,7 +157,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             <audio
                 autoPlay
                 ref={audioRef}
-                src={clip_id ? `/api/clips/audio/${clip_id}` : ""}
+                src={process.env.REACT_APP_DEMO ? 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav' : (clip_id ? `/api/clips/audio/${clip_id}` : "")}
                 onEnded={() => handleEnd()}
             ></audio>
         </div>
