@@ -21,7 +21,7 @@ export const InterfaceForAPI_DemoData = {
             { id: 6, date: '2024-06-15T00:00:00.000Z', source_id: 1 },
         ];
         // Return all rows matching the condition
-        return rows.filter(row => row.source_id === id);
+        return rows.filter(row => row.source_id === id).sort((a, b) => b.id - a.id);
 
     },
     getAllClipsByDateId: (id: number) => {
@@ -86,7 +86,8 @@ export const InterfaceForAPI_DemoData = {
             { id: 53, time: "12:20:21", date_id: 6 },
             { id: 54, time: "12:42:25", date_id: 6 },
         ];
+
         // Return all rows matching the condition
-        return rows.filter(row => row.date_id === id);
+        return rows.filter(row => row.date_id === id).sort((a, b) => b.id - a.id);
     }
 }
