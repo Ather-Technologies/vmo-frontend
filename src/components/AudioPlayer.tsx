@@ -19,6 +19,19 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     const audioRef = useRef<HTMLAudioElement>(null);
 
+    useEffect(() => {
+        if (audioRef.current) {
+            if (process.env.REACT_APP_DEMO)
+                audioRef.current.src = 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav'
+            else if (clip_id)
+                audioRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`;
+
+            if (!clip_id)
+                audioRef.current.src = '';
+        }
+        console.log(clip_id)
+    }, [clip_id]);
+
     const togglePlay = () => {
         if (audioRef.current) {
             if (isPlaying) {
@@ -157,7 +170,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             <audio
                 autoPlay
                 ref={audioRef}
-                src={process.env.REACT_APP_DEMO ? 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav' : (clip_id ? `/api/clips/audio/${clip_id}` : "")}
+                src=''
                 onEnded={() => handleEnd()}
             ></audio>
         </div>
