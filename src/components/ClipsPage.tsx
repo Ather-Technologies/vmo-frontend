@@ -29,11 +29,6 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         oldRow?.classList.remove("bg-slate-100");
         oldRow?.classList.remove("dark:bg-slate-700");
 
-        // Add new highlight
-        const row = document.getElementById("vmo-clip-" + newClip_id.toString());
-        row?.classList.add("bg-slate-100");
-        row?.classList.add("dark:bg-slate-700");
-
         // Set the clip_id in the sibling component useState so the audio player can play the correct clip
         if (newClip_id) {
             setClipID(newClip_id);
@@ -43,7 +38,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     useEffect(() => {
         // Set the clip_id to the oldest clip in the list
         if (!clip_id && clips.length > 0) {
-            setClipID(clips[0]?.id + clips.length - 1);
+            setClipID(clips[0]?.id);
         }
     }, [clips, clip_id, setClipID, onClick]);
 
@@ -64,12 +59,12 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         });
     }, [date_id, apiInterface]);
 
-    // Add highlight if on load the cookie is set
-    useEffect(() => {
-        // Highlight that gentleman
-        const row = document.getElementById("vmo-clip-" + clip_id.toString());
-        row?.classList.add("bg-slate-100");
-        row?.classList.add("dark:bg-slate-700");
+    // Add highlight if on load if clip_id is set
+     useEffect(() => {
+         // Highlight that gentleman
+         const row = document.getElementById("vmo-clip-" + clip_id.toString());
+         row?.classList.add("bg-slate-100");
+         row?.classList.add("dark:bg-slate-700");
     }, [clip_id, currentItems]);
 
     useEffect(() => {
