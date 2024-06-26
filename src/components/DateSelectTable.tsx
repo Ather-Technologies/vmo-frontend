@@ -6,6 +6,7 @@ import Pagination from "./Pagination";
 import { ClipDate } from "../lib/types";
 import API_Interface from "../lib/InterfaceForAPI";
 import { ClipDateStateDataProp } from "../lib/types";
+import NoSleep from 'nosleep.js';
 
 interface DSTProps {
     setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,6 +35,10 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
     }, [date_id]);
 
     const onClick = (newDate_id: number) => {
+        const noSleep = new NoSleep();
+        noSleep.disable();
+        noSleep.enable();
+
         // Remove old highlight
         const oldRow = document.getElementById("vmo-date-" + date_id.toString());
         oldRow?.classList.remove("bg-slate-100");
