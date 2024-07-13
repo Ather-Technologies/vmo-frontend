@@ -43,6 +43,9 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     }, [clips, clip_id, setClipID, onClick]);
 
     useEffect(() => {
+        // Set clip_id to NaN so the new clip can be loaded
+        setClipID(NaN);
+
         // If clip_id or date_id is not set, terminate early
         if (!date_id) {
             setIsLoading(false);
@@ -57,7 +60,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
             // Fix pagination by adding at least 1 item to allow pagination calculations
             setCurrentItems(clips.slice(0, 1));
         });
-    }, [date_id, apiInterface]);
+    }, [date_id, setClipID, apiInterface]);
 
     // Add highlight if on load if clip_id is set
      useEffect(() => {
