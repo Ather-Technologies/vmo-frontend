@@ -34,12 +34,10 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     const togglePlay = () => {
         if (audioRef.current) {
-            if (isPlaying) {
+            if (isPlaying)
                 audioRef.current.pause();
-            } else {
+            else
                 audioRef.current.play();
-            }
-            setIsPlaying(prevIsPlaying => !prevIsPlaying);
         }
     };
 
@@ -137,14 +135,6 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             };
         }
     }, [handleEnd]);
-
-    useEffect(() => {
-        if (audioRef.current?.paused) {
-            setIsPlaying(false);
-        } else {
-            setIsPlaying(true);
-        }
-    }, [audioRef.current?.paused]);
 
     return (
         <div className="flex items-center">
