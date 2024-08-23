@@ -24,6 +24,10 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     const tableRowRef = useRef<HTMLTableRowElement>(null);
 
     const onClick = useCallback((newClip_id: number) => {
+        // Terminate early if the new clip_id is the same as the current clip_id
+        if (newClip_id === clip_id)
+            return;
+
         // Remove old highlight
         const oldRow = document.getElementById("vmo-clip-" + clip_id.toString());
         oldRow?.classList.remove("bg-slate-100");
@@ -37,8 +41,16 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
 
     useEffect(() => {
         // Set the clip_id to the oldest clip in the list
-        if (!clip_id && clips.length > 0) {
+        if (isNaN(clip_id) && clips.length > 0) {
             setClipID(clips[0]?.id);
+        }
+        
+        // Heres a bug fix lol.. 
+        // So basically it would set the clip_id before the clips were loaded causing a 
+        // race condition where you would change the date and the old clip would play if that date was without any clips
+        // I could also just add a check to see if the clips[0].date_id is the same as the current date_id
+        if (clips.length === 0) { 
+            setClipID(NaN);
         }
     }, [clips, clip_id, setClipID, onClick]);
 
