@@ -151,11 +151,20 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
                 </button>
             )}
             <div className="flex items-center">
-                <div className="bg-gray-400 h-2 w-32 mr-2" onClick={handleSeek}>
-                    <div className="bg-gradient-to-r from-sky-500 to-indigo-800 h-full w-1/3" style={{ width: `${currentTime === 0 ? 0 : (currentTime / duration) * 100}%` }}></div>
-                </div>
+                {
+                    isLoading ? (
+                        null
+                    ) :
+                    <div className="bg-gray-400 h-2 w-32 mr-2" onClick={handleSeek}>
+                        <div className="bg-gradient-to-r from-sky-500 to-indigo-800 h-full w-1/3" style={{ width: `${currentTime === 0 ? 0 : (currentTime / duration) * 100}%` }}></div>
+                    </div>
+                }
                 <p className="text-sm">
-                    {`${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')} / ${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`}
+                    {isLoading ? (
+                        'Nothing to play...'
+                    ) : (
+                        `${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')} / ${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`
+                    )}
                 </p>
             </div>
             <audio
