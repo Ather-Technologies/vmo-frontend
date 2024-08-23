@@ -32,7 +32,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
         const row = document.getElementById("vmo-date-" + date_id.toString());
         row?.classList.add("bg-slate-100");
         row?.classList.add("dark:bg-slate-700");
-    }, [date_id]);
+    }, [date_id, currentItems]);
 
     const onClick = (newDate_id: number) => {
         const noSleep = new NoSleep();

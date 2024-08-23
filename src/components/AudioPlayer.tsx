@@ -26,8 +26,9 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             else if (clip_id)
                 audioRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`;
 
-            if (!clip_id)
+            if (isNaN(clip_id))
                 audioRef.current.src = '';
+                setIsLoading(true);
         }
         console.log(clip_id)
     }, [clip_id]);
@@ -57,7 +58,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
         const nextClipKey = getNextClipKey();
 
         // If next clip exists, play it
-        if (true) {
+        if (nextClipKey) {
             // Remove old highlight
             const oldRow = document.getElementById(`vmo-clip-${clip_id}`);
             oldRow?.classList.remove("bg-slate-100");
@@ -65,9 +66,9 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
             // Make it blue!
             setClipID(nextClipKey);
-        } else {
+        } else{
             // Handle page change or something idk make this idiot work somehow or I'm gonna lose it
-            console.log('You unrelenting pain in my ass.', (clip_id), `vmo-clip-${nextClipKey}`);
+            console.log('No newer clip in this date detected. Current CID:', (clip_id), `vmo-clip-${nextClipKey}`);
         }
     }, [clip_id, setClipID, getNextClipKey, setIsPlaying]);
 
