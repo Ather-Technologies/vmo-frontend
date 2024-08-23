@@ -120,19 +120,19 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     };
 
     useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-            audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-            audioRef.current.addEventListener('play', () => setIsPlaying(true));
-            audioRef.current.addEventListener('pause', () => setIsPlaying(false));
-            audioRef.current.addEventListener('ended', () => handleEnd);
+        const currentAudioRef = audioRef.current;
+        if (currentAudioRef) {
+            currentAudioRef.addEventListener('timeupdate', handleTimeUpdate);
+            currentAudioRef.addEventListener('loadedmetadata', handleLoadedMetadata);
+            currentAudioRef.addEventListener('play', () => setIsPlaying(true));
+            currentAudioRef.addEventListener('pause', () => setIsPlaying(false));
+            currentAudioRef.addEventListener('ended', () => handleEnd);
             return () => {
-                audioRef.current?.removeEventListener('ended', () => handleEnd);
-                audioRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
-                audioRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata);
-                audioRef.current?.removeEventListener('play', () => setIsPlaying(true));
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                audioRef.current?.removeEventListener('pause', () => setIsPlaying(false));
+                currentAudioRef?.removeEventListener('ended', () => handleEnd);
+                currentAudioRef?.removeEventListener('timeupdate', handleTimeUpdate);
+                currentAudioRef?.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                currentAudioRef?.removeEventListener('play', () => setIsPlaying(true));
+                currentAudioRef?.removeEventListener('pause', () => setIsPlaying(false));
             };
         }
     }, [handleEnd]);
