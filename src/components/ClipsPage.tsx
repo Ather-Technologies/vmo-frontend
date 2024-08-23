@@ -17,6 +17,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     const [loadingText, setLoadingText] = useState<string | null>(null);
     const [currentItems, setCurrentItems] = useState<Clip[]>([]);
     const apiInterface = useMemo(() => new API_Interface(), []);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // Shorthand the CDStateData values
     const [clip_id, setClipID, date_id] = [CDStateData.clip_id, CDStateData.setClipID, CDStateData.date_id];
@@ -65,13 +66,29 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         }
 
         // Fetch clips from the database and update the state
-        apiInterface.getAllClipsByDateId(date_id).then((clips: Clip[]) => {
-            setClips(clips);
-            setIsLoading(false);
+        const fetchClips = () => {
+            console.log("Fetching clips for date_id: " + date_id);
+            apiInterface.getAllClipsByDateId(date_id).then((clips: Clip[]) => {
+                setClips(clips);
+                setIsLoading(false);
 
-            // Fix pagination by adding at least 1 item to allow pagination calculations
-            setCurrentItems(clips.slice(0, 1));
-        });
+                // Fix pagination by adding at least 1 item to allow pagination calculations
+                setCurrentItems(clips.slice(0, 1));
+            });
+        };
+
+        fetchClips();
+
+        // Set interval to fetch clips every 30 seconds
+        if (!intervalRef.current)
+            intervalRef.current = setInterval(fetchClips, 30000);
+
+        // Clear interval on component unmount
+        return () => {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
+        };
     }, [date_id, setClipID, apiInterface]);
 
     // Add highlight if on load if clip_id is set

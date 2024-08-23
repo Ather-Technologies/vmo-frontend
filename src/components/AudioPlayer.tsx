@@ -13,6 +13,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // You know the drill by now
     const [clip_id, setClipID] = [CDStateData.clip_id, CDStateData.setClipID];
@@ -28,7 +29,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
             if (isNaN(clip_id))
                 audioRef.current.src = '';
-                setIsLoading(true);
+            setIsLoading(true);
         }
         console.log(clip_id)
     }, [clip_id]);
@@ -44,6 +45,8 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     // This is the screwed up method to get the next clip key without ignoring clips that were uploaded out of sequence
     const getNextClipKey = useCallback(() => {
+        console.log("Checking for next clip in DOM...");
+
         // Get the attribute x-vmo-clipidx from the element with the id vmo-clip-clip_id=props.clip_id
         const currentIndex = Number(document.getElementById(`vmo-clip-${clip_id}`)?.getAttribute('x-vmo-clipidx'));
 
@@ -64,13 +67,29 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             oldRow?.classList.remove("bg-slate-100");
             oldRow?.classList.remove("dark:bg-slate-700");
 
+            // Remove the retry interval if a new clip was found
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+
             // Make it blue!
             setClipID(nextClipKey);
-        } else{
+        } else {
             // Handle page change or something idk make this idiot work somehow or I'm gonna lose it
-            console.log('No newer clip in this date detected. Current CID:', (clip_id), `vmo-clip-${nextClipKey}`);
+            // console.log('No newer clip in this date detected. Current CID:', (clip_id), `vmo-clip-${nextClipKey}`);
+            if (!intervalRef.current)
+                intervalRef.current = setInterval(handleEnd, 10000);
         }
-    }, [clip_id, setClipID, getNextClipKey, setIsPlaying]);
+
+        // Clear interval on component unmount
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [clip_id, setClipID, getNextClipKey, setIsPlaying, intervalRef]);
 
     const handleTimeUpdate: any = () => {
         if (audioRef.current) {
@@ -155,9 +174,9 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
                     isLoading ? (
                         null
                     ) :
-                    <div className="bg-gray-400 h-2 w-32 mr-2" onClick={handleSeek}>
-                        <div className="bg-gradient-to-r from-sky-500 to-indigo-800 h-full w-1/3" style={{ width: `${currentTime === 0 ? 0 : (currentTime / duration) * 100}%` }}></div>
-                    </div>
+                        <div className="bg-gray-400 h-2 w-32 mr-2" onClick={handleSeek}>
+                            <div className="bg-gradient-to-r from-sky-500 to-indigo-800 h-full w-1/3" style={{ width: `${currentTime === 0 ? 0 : (currentTime / duration) * 100}%` }}></div>
+                        </div>
                 }
                 <p className="text-sm">
                     {isLoading ? (
