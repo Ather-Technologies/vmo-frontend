@@ -66,7 +66,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
             // Convert dates to locale format
             const formattedDates = datesData.map((dateData) => {
                 const date = new Date(dateData.date);
-                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: 'UTC' });
+                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
                 return { ...dateData, date: formattedDate };
             });
 
