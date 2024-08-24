@@ -25,7 +25,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             if (process.env.REACT_APP_DEMO)
                 audioRef.current.src = 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav'
             else if (clip_id)
-                audioRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`;
+                audioRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`.replaceAll('"', '');
 
             if (isNaN(clip_id))
                 audioRef.current.src = '';
