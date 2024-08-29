@@ -31,8 +31,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
 
         // Remove old highlight
         const oldRow = document.getElementById("vmo-clip-" + clip_id.toString());
-        oldRow?.classList.remove("bg-slate-100");
-        oldRow?.classList.remove("dark:bg-slate-700");
+        oldRow?.classList.remove("bg-slate-700");
 
         // Set the clip_id in the sibling component useState so the audio player can play the correct clip
         if (newClip_id) {
@@ -95,8 +94,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
      useEffect(() => {
          // Highlight that gentleman
          const row = document.getElementById("vmo-clip-" + clip_id.toString());
-         row?.classList.add("bg-slate-100");
-         row?.classList.add("dark:bg-slate-700");
+         row?.classList.add("bg-slate-700");
     }, [clip_id, currentItems]);
 
     useEffect(() => {
@@ -111,17 +109,17 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         return (
             <div>
                 <table className="table-auto w-full">
-                    <tbody className="bg-white dark:bg-slate-800">
+                    <tbody className="bg-slate-800">
                         {currentItems.map((clip, index) => (
                             <tr id={`vmo-clip-${clip.id}`} x-vmo-clipidx={index} onClick={() => onClick(clip?.id)} ref={tableRowRef} key={clip.id}>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8">
+                                <td className="border-b border-slate-700 p-4 pl-8">
                                     {CDStateData.selectedDateFullData.source.shorthand}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4">
+                                <td className="border-b border-slate-700 p-4">
                                     {new Date(CDStateData.selectedDateFullData.date).toLocaleDateString('en-US',
-                                        { month: '2-digit', day: '2-digit', year: '2-digit'})}
+                                        { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: 'UTC' },)}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8">
+                                <td className="border-b border-slate-700 p-4 pr-8">
                                     {clip.time}
                                 </td>
                             </tr>

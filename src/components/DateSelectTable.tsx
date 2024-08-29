@@ -30,8 +30,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
     useEffect(() => {
         // Add new highlight
         const row = document.getElementById("vmo-date-" + date_id.toString());
-        row?.classList.add("bg-slate-100");
-        row?.classList.add("dark:bg-slate-700");
+        row?.classList.add("bg-slate-700");
     }, [date_id, currentItems]);
 
     const onClick = (newDate_id: number) => {
@@ -41,13 +40,11 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
 
         // Remove old highlight
         const oldRow = document.getElementById("vmo-date-" + date_id.toString());
-        oldRow?.classList.remove("bg-slate-100");
-        oldRow?.classList.remove("dark:bg-slate-700");
+        oldRow?.classList.remove("bg-slate-700");
 
         // Add new highlight
         const row = document.getElementById("vmo-date-" + newDate_id.toString());
-        row?.classList.add("bg-slate-100");
-        row?.classList.add("dark:bg-slate-700");
+        row?.classList.add("bg-slate-700");
 
         // Set the _dateKey in the sibling component useState so the clips table can display the clips for the selected date
         if (newDate_id) {
@@ -66,7 +63,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
             // Convert dates to locale format
             const formattedDates = datesData.map((dateData) => {
                 const date = new Date(dateData.date);
-                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
+                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: "UTC"  });
                 return { ...dateData, date: formattedDate };
             });
 
@@ -89,21 +86,21 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
         return (
             <div>
                 <table className="table-auto w-full">
-                    <tbody className="bg-white dark:bg-slate-800">
+                    <tbody className="bg-slate-800">
                         {currentItems.map((clipDateData) => (
                             <tr id={'vmo-date-' + clipDateData.id} onClick={() => onClick(clipDateData.id)} ref={tableRowRef} key={clipDateData.id}>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8">
+                                <td className="border-b border-slate-700 p-4 pl-8">
                                     {/* CDStateData.selectedDateFullData.source.name er somthin */"Sanders County Sheriff's Office"}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4">
+                                <td className="border-b border-slate-700 p-4">
                                     {clipDateData.date}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8">
-                                    {clipDateData.id + " Clip"}
+                                <td className="border-b border-slate-700 p-4 pr-8">
+                                    {"DateID: " + clipDateData.id} {/* TO:DO count the # of clips for the date and display it here somehow :) */}
                                 </td>
-                                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8">
-                                    {true ? ( // -------------------- This also needs to be fixed later with dynamic lookup of outage status preferably sent with dates from the API
-                                        <FontAwesomeIcon icon={faCheckCircle} title="No outages" />
+                                <td className="border-b border-slate-700 p-4 pr-8">
+                                    {true ? ( // -------------------- TO:DO This also needs to be setup later with dynamic lookup of outage status preferably sent with dates from the API
+                                        <FontAwesomeIcon icon={faCheckCircle} title="No outage detection setup" />
                                     ) : (
                                         <FontAwesomeIcon icon={faExclamationTriangle} title={'Yeah there was an outage.'} />
                                     )}

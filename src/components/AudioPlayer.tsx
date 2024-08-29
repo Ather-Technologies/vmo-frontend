@@ -64,8 +64,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
         if (nextClipKey) {
             // Remove old highlight
             const oldRow = document.getElementById(`vmo-clip-${clip_id}`);
-            oldRow?.classList.remove("bg-slate-100");
-            oldRow?.classList.remove("dark:bg-slate-700");
+            oldRow?.classList.remove("bg-slate-700");
 
             // Remove the retry interval if a new clip was found
             if (intervalRef.current) {
