@@ -10,7 +10,7 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
         if (tableRow) {
             const containerHeight = window.innerHeight;
             const rowHeight = tableRow.clientHeight;
-            let numRows = Math.floor(containerHeight / rowHeight) - 2; // Subtract 2 rows for a margin
+            let numRows = Math.floor(containerHeight / rowHeight) - 3; // Subtract 2 rows for a margin
 
             setItemsPerPage(numRows <= items.length ? numRows : items.length);
         }
