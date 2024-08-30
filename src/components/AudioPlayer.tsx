@@ -19,16 +19,21 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     const [clip_id, setClipID] = [CDStateData.clip_id, CDStateData.setClipID];
 
     const audioRef = useRef<HTMLAudioElement>(null);
+    const sourceRef = useRef<HTMLSourceElement>(null);
 
     useEffect(() => {
-        if (audioRef.current) {
+        if (sourceRef.current && audioRef.current) {
             if (process.env.REACT_APP_DEMO)
-                audioRef.current.src = 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav'
+                sourceRef.current.src = 'https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_WAV.wav'
             else if (clip_id)
-                audioRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`.replaceAll('"', '');
+                sourceRef.current.src = `${process.env.REACT_APP_API_HOST}/api/clips/audio/${clip_id}`.replaceAll('"', '');
 
             if (isNaN(clip_id))
-                audioRef.current.src = '';
+                sourceRef.current.src = '';
+
+            // You must call load to get the audio element to load the new source
+            audioRef.current.load();
+            
             setIsLoading(true);
         }
         console.log(clip_id)
@@ -119,6 +124,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
     const handleLoadedMetadata = () => {
         if (audioRef.current) {
             setDuration(audioRef.current.duration);
+            audioRef.current.volume = 1; // Ensure volume is set to 100%
             audioRef.current.play().catch(() => { toast.error("Please allow auto play for the site to work!") });
             setIsLoading(false);
         }
@@ -188,9 +194,10 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             <audio
                 autoPlay
                 ref={audioRef}
-                src=''
                 onEnded={() => handleEnd()}
-            ></audio>
+            >
+                <source ref={sourceRef} src="" type="audio/wav" />
+            </audio>
         </div>
     );
 }
