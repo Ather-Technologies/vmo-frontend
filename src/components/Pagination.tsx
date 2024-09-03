@@ -58,16 +58,6 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
         setCurrentPage(1);
     };
 
-    // Handles a click on the previous page button
-    const handlePreviousClick = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1));
-    };
-
-    // Handles a click on the next page button
-    const handleNextClick = () => {
-        setCurrentPage(prev => Math.min(prev + 1, totalPages));
-    };
-
     // Handles a click on the last page button
     const handleLastClick = () => {
         setCurrentPage(totalPages);
