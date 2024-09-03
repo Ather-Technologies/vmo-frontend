@@ -104,17 +104,7 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
                                 {"<<"}
                             </button>
                         </li>
-                        <li>
-                            <button onClick={handlePreviousClick} hidden={currentPage === 1} className="p-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">
-                                {"<"}
-                            </button>
-                        </li>
                         {renderPageNumbers}
-                        <li className="ml-1">
-                            <button onClick={handleNextClick} hidden={currentPage === totalPages} className="p-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">
-                                {">"}
-                            </button>
-                        </li>
                         <li className="ml-1">
                             <button onClick={handleLastClick} hidden={currentPage === totalPages} className="p-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">
                                 {">>"}
