@@ -1,5 +1,5 @@
 # Everybody loves alpine
-FROM arm64v8/alpine:3.19
+FROM alpine:latest
 
 # Install dependencies
 RUN apk add --no-cache nodejs npm
