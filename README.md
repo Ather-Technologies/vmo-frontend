@@ -1,4 +1,7 @@
 # vm-o.com
+
+[![Node.js Unit Tests](https://github.com/Ather-Technologies/vmo-frontend/actions/workflows/node.js.yml/badge.svg)](https://github.com/Ather-Technologies/vmo-frontend/actions/workflows/node.js.yml)
+
 Hey everyone, not sure who will actually look at the repo or Readme but I wanted to thank you all for the interest in this project. I spent about 4 months on the rebuild after some major issues surfaced and reached a dead end with the project. I spend 10 months improving my React skills and getting married and in general having life happen to me. So now with a renewed hope for completion I've come back in full force, I want this damn thing online at whatever cost!
 
 ## TO:DO
