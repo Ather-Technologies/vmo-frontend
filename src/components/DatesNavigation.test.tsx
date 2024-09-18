@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DatesNavigation from './DatesNavigation';
 import { ClipDateStateDataProp, FullClipDate } from '../lib/types';
-import { act } from 'react';
 
 test('renders DatesNavigation and button component', async () => {
   const setClipID = jest.fn();
@@ -31,9 +30,9 @@ test('renders DatesNavigation and button component', async () => {
     setSelectedDateFullData // This is the setter for the selectedDateFullData
   };
 
-  await act(async () => {
-    render(<DatesNavigation CDStateData={CDStateData} />);
-  });
+  HTMLMediaElement.prototype.load = () => {};
+
+  render(<DatesNavigation CDStateData={CDStateData} />);
 
   const sourceName = screen.getByText("Please pick a date");
 

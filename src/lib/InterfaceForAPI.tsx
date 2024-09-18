@@ -23,12 +23,18 @@ export default class API_Interface {
         process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getAllDatesBySourceId(sourceId) : (await this.makeApiFetch(`/dates/many/source_id/${sourceId}`));
 
     async makeApiFetch(url: string): Promise<any> {
-        const result = await fetch(`${process.env.REACT_APP_API_HOST}/api${url}`.replaceAll('"', ''), {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        });
+        let result;
+        try {
+            result = await fetch(`${process.env.REACT_APP_API_HOST}/api${url}`.replaceAll('"', ''), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            });
+        }
+        catch (e) {
+            console.error(e);
+        }
 
         // If the result is undefined, return an empty array
         if (!result) return [];
