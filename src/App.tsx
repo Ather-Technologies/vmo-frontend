@@ -4,7 +4,7 @@ import LoadingScreen from './components/LoadingScreen';
 import ClipsPage from './components/ClipsPage';
 import { Toaster, toast } from 'react-hot-toast';
 import { ClipDateStateDataProp, FullClipDate } from './lib/types';
-import FloatingMenu from './components/FloatingMenu';
+// import FloatingMenu from './components/FloatingMenu';
 import LoginAndRegistration from './components/LoginAndRegistration';
 
 function App() {
@@ -54,7 +54,7 @@ function App() {
         // If not authenticated show the login and registration page
         doAuth() === true ? (
           isLoading ? <LoadingScreen loadingText='Loading...' /> : <>
-            <FloatingMenu />
+            {/* <FloatingMenu /> */}
             {/* <NavigationHeader /> */}
             <ClipsPage CDStateData={CDStateData} />
             <DatesNavigation CDStateData={CDStateData} />
