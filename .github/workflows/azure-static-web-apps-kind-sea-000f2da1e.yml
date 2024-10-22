@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - dev
+      - staging
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -31,6 +33,9 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "build" # Built app content directory - optional
+          production_branch: "main"
+        env:
+          REACT_APP_API_HOST: ${{ vars.API_HOST }}
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
