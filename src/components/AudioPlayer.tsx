@@ -33,7 +33,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
             // You must call load to get the audio element to load the new source
             audioRef.current.load();
-            
+
             setIsLoading(true);
         }
         console.log(clip_id)
@@ -80,10 +80,56 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             // Make it blue!
             setClipID(nextClipKey);
         } else {
-            // Handle page change or something idk make this idiot work somehow or I'm gonna lose it
-            // console.log('No newer clip in this date detected. Current CID:', (clip_id), `vmo-clip-${nextClipKey}`);
-            if (!intervalRef.current)
+            // Try to go to the next page if available
+            if (window.vmoPagination && window.vmoPagination['clips']) {
+                const paginationHandler = window.vmoPagination['clips'];
+
+                // If we can advance to the next page
+                if (paginationHandler.goToNextPage()) {
+                    console.log('Moving to next page to continue playback');
+
+                    // Clear any existing interval
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current);
+                        intervalRef.current = null;
+                    }
+
+                    // Set a short timeout to allow the clips to load before selecting the oldest clip
+                    setTimeout(() => {
+                        // Find all clips on the current page
+                        const clipElements = document.querySelectorAll('[x-vmo-clipidx]');
+                        if (clipElements.length > 0) {
+                            // Find the clip with the highest index (oldest clip on page)
+                            let highestIndex = -1;
+                            let oldestClipElement: Element | null = null;
+
+                            clipElements.forEach(element => {
+                                const index = Number(element.getAttribute('x-vmo-clipidx'));
+                                if (index > highestIndex) {
+                                    highestIndex = index;
+                                    oldestClipElement = element;
+                                }
+                            });
+
+                            // Play the oldest clip (highest index) on the page
+                            if (oldestClipElement) {
+                                const newClipId = Number((oldestClipElement as HTMLElement).id.split('-')[2]);
+                                if (newClipId) {
+                                    setClipID(newClipId);
+                                }
+                            }
+                        }
+                    }, 300);
+
+                    return;
+                }
+            }
+
+            // If we can't advance to the next page or there's no pagination handler,
+            // use the existing retry logic
+            if (!intervalRef.current) {
                 intervalRef.current = setInterval(handleEnd, 10000);
+            }
         }
 
         // Clear interval on component unmount

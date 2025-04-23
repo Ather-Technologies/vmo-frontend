@@ -63,7 +63,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
             // Convert dates to locale format
             const formattedDates = datesData.map((dateData) => {
                 const date = new Date(dateData.date);
-                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: "UTC"  });
+                const formattedDate = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: "UTC" });
                 return { ...dateData, date: formattedDate };
             });
 
@@ -95,7 +95,7 @@ function DateSelectTable({ CDStateData, setIsExpanded }: DSTProps) {
                                 <td className="border-b border-slate-700 p-4">
                                     {clipDateData.date}
                                 </td>
-                                <td className="border-b border-slate-700 p-4 pr-8">
+                                <td className="border-b border-slate-700 p-4 pr-8 hidden">
                                     {"DateID: " + clipDateData.id} {/* TO:DO count the # of clips for the date and display it here somehow :) */}
                                 </td>
                                 <td className="border-b border-slate-700 p-4 pr-8">

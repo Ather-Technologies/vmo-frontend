@@ -27,11 +27,13 @@ function LoginAndRegistration({ setAuthState }: LoginAndRegistrationProps) {
                 <div className="bg-gray-800 p-8 shadow-md rounded-md">
                     {true ? <>
                         <h3 className="text-2xl font-bold mb-4">Welcome to the VM-O Scanner,<br></br>I hope you enjoy this early access build!</h3>
-                        <p>Thank you for visiting the public early access!<br></br>The service has just come fully online 08/28/2024 so expect more clips to be availible from there on. <br></br>You may experience bugs or poor performance if you have the time, please report these using the contact us link in the top left menu on the clips page. Enjoy!</p>
+                        <p>Thank you for visiting the public early access!</p>
+                        <p className='text-green-200'><br></br>Latest Update 04/22/2025: Made pages automatically advance if you finish listening to the oldest clip on the page.</p>
+                        <p><br></br>You may experience bugs or poor performance if you have the time, please report these using the contact us link in the top left menu on the clips page. Enjoy!</p>
                         <form>
                             <button
                                 type="button"
-                                className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-500"
+                                className="px-4 py-2 my-4 text-sm font-medium text-black bg-green-300 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-500"
                                 onClick={handleRegister}
                             >
                                 I understand, continue.
@@ -88,7 +90,7 @@ function LoginAndRegistration({ setAuthState }: LoginAndRegistrationProps) {
                     </>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -63,6 +63,36 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
         setCurrentPage(totalPages);
     };
 
+    // Function to advance to the next page
+    const goToNextPage = useCallback(() => {
+        if (currentPage > 1) {
+            setCurrentPage(prevPage => prevPage - 1);
+            return true;
+        }
+        return false;
+    }, [currentPage]);
+
+    // Expose functions through the ref for external use
+    useEffect(() => {
+        // Make pagination functions available globally
+        if (paginationTag) {
+            // Add the functions to the window object for access from other components
+            window.vmoPagination = window.vmoPagination || {};
+            window.vmoPagination[paginationTag] = {
+                goToNextPage,
+                currentPage,
+                totalPages
+            };
+        }
+
+        // Cleanup
+        return () => {
+            if (paginationTag && window.vmoPagination) {
+                delete window.vmoPagination[paginationTag];
+            }
+        };
+    }, [paginationTag, goToNextPage, currentPage, totalPages]);
+
     // Renders the page numbers into the dom
     const renderPageNumbers = pageNumbers.map(number => (
         <li key={number} className="inline-block ml-1 mt-1">
@@ -114,6 +144,19 @@ function Pagination({ items, setCurrentItems, tableRowRef, paginationTag }: Pagi
             )}
         </div>
     );
+}
+
+// Add TypeScript declaration for window object extension
+declare global {
+    interface Window {
+        vmoPagination?: {
+            [key: string]: {
+                goToNextPage: () => boolean;
+                currentPage: number;
+                totalPages: number;
+            }
+        }
+    }
 }
 
 export default Pagination;
