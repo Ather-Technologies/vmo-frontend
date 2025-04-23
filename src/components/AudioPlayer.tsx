@@ -191,18 +191,22 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     useEffect(() => {
         const currentAudioRef = audioRef.current;
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
+
         if (currentAudioRef) {
             currentAudioRef.addEventListener('timeupdate', handleTimeUpdate);
             currentAudioRef.addEventListener('loadedmetadata', handleLoadedMetadata);
-            currentAudioRef.addEventListener('play', () => setIsPlaying(true));
-            currentAudioRef.addEventListener('pause', () => setIsPlaying(false));
-            currentAudioRef.addEventListener('ended', () => handleEnd);
+            currentAudioRef.addEventListener('play', handlePlay);
+            currentAudioRef.addEventListener('pause', handlePause);
+            currentAudioRef.addEventListener('ended', handleEnd);
+
             return () => {
-                currentAudioRef?.removeEventListener('ended', () => handleEnd);
-                currentAudioRef?.removeEventListener('timeupdate', handleTimeUpdate);
-                currentAudioRef?.removeEventListener('loadedmetadata', handleLoadedMetadata);
-                currentAudioRef?.removeEventListener('play', () => setIsPlaying(true));
-                currentAudioRef?.removeEventListener('pause', () => setIsPlaying(false));
+                currentAudioRef.removeEventListener('ended', handleEnd);
+                currentAudioRef.removeEventListener('timeupdate', handleTimeUpdate);
+                currentAudioRef.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                currentAudioRef.removeEventListener('play', handlePlay);
+                currentAudioRef.removeEventListener('pause', handlePause);
             };
         }
     }, [handleEnd]);
@@ -240,7 +244,6 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
             <audio
                 autoPlay
                 ref={audioRef}
-                onEnded={() => handleEnd()}
             >
                 <source ref={sourceRef} src="" type="audio/wav" />
             </audio>

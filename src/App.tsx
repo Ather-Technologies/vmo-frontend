@@ -56,7 +56,9 @@ function App() {
           isLoading ? <LoadingScreen loadingText='Loading...' /> : <>
             {/* <FloatingMenu /> */}
             {/* <NavigationHeader /> */}
-            <ClipsPage CDStateData={CDStateData} />
+            <div className="container mx-auto px-4 pb-16 md:pb-20 p-5">
+              <ClipsPage CDStateData={CDStateData} />
+            </div>
             <DatesNavigation CDStateData={CDStateData} />
           </>
         ) : <LoginAndRegistration setAuthState={setIsAuthenticated} />
