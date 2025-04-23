@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       backgroundColor: {
         'navcolor': '#1d4736'
-      }
+      },
+      screens: {
+        'xs': '480px',
+      },
     },
   },
   plugins: [require('tailwindcss-safe-area')],
