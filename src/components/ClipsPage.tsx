@@ -131,7 +131,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     const formattedDate = useMemo(() => {
         try {
             return new Date(CDStateData.selectedDateFullData.date).toLocaleDateString('en-US',
-                { month: '2-digit', day: '2-digit', year: '2-digit' });
+                { month: '2-digit', day: '2-digit', year: '2-digit', timeZone: 'UTC' });
         } catch (e) {
             console.error("Error formatting date:", e);
             return '';
