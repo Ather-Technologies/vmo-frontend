@@ -83,10 +83,16 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         // Fetch clips from the database and update the state
         const fetchClips = () => {
             console.log("Fetching clips for date_id: " + date_id);
-            apiInterface.getAllClipsByDateId(date_id).then((clips: Clip[]) => {
-                setClips(clips);
+            apiInterface.getAllClipsByDateId(date_id).then((newClips: Clip[]) => {
+                // if the clips are not a different length than the current clips, set the loading text
+                // eslint-disable-next-line
+                if (newClips.length === clips.length) {
+                    setIsLoading(false);
+                    return;
+                }
                 setIsLoading(false);
-                setCurrentItems(clips.slice(0, 1));
+                setClips(newClips);
+                setCurrentItems(newClips.slice(0, 1));
             });
         };
 
