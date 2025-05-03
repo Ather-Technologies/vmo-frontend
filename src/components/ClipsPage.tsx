@@ -69,6 +69,11 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         }
     }, [clips, clip_id, setClipID]);
 
+    const getActiveClipsLength = useCallback(() => {
+        // Get the length of the clips that are currently active
+        return clips.length;
+    }, [clips]);
+
     useEffect(() => {
         // Set clip_id to NaN so the new clip can be loaded
         setClipID(NaN);
@@ -86,7 +91,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
             apiInterface.getAllClipsByDateId(date_id).then((newClips: Clip[]) => {
                 // if the clips are not a different length than the current clips, set the loading text
                 // eslint-disable-next-line
-                if (newClips.length === clips.length) {
+                if (newClips.length === getActiveClipsLength()) {
                     setIsLoading(false);
                     return;
                 }
@@ -108,7 +113,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [date_id, setClipID, apiInterface]);
+    }, [date_id, setClipID, apiInterface, getActiveClipsLength]);
 
     // Fetch tones for the current source
     useEffect(() => {
