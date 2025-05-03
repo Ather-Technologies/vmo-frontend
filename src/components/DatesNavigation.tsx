@@ -56,7 +56,8 @@ function DatesNavigation({ CDStateData }: DatesNavProp) {
       const formattedDate = new Date(selectedDate.date).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
+        timeZone: 'UTC',
       });
       return (
         <div className="flex items-center font-medium">
