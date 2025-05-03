@@ -116,6 +116,17 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
                                 const newClipId = Number((oldestClipElement as HTMLElement).id.split('-')[2]);
                                 if (newClipId) {
                                     setClipID(newClipId);
+
+                                    // Manually apply visual highlight
+                                    setTimeout(() => {
+                                        const newRow = document.getElementById(`vmo-clip-${newClipId}`);
+                                        if (newRow) {
+                                            // Apply the same CSS classes used in the ClipsPage for active clips
+                                            newRow.classList.add('bg-indigo-800/40');
+                                            newRow.classList.add('border-l-4');
+                                            newRow.classList.add('border-blue-500');
+                                        }
+                                    }, 50); // Short delay to ensure DOM is updated
                                 }
                             }
                         }
