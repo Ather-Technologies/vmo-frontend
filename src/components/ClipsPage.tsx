@@ -75,39 +75,34 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     }, [clips]);
 
     useEffect(() => {
-        // Set clip_id to NaN so the new clip can be loaded
         setClipID(NaN);
         initialLoadRef.current = true;
 
-        // If clip_id or date_id is not set, terminate early
         if (!date_id) {
+            setClips([]); // Clear clips if no date selected
             setIsLoading(false);
             return;
         }
 
-        // Fetch clips from the database and update the state
         const fetchClips = () => {
-            console.log("Fetching clips for date_id: " + date_id);
+            setIsLoading(true); // Start loading before fetch
             apiInterface.getAllClipsByDateId(date_id).then((newClips: Clip[]) => {
                 // if the clips are not a different length than the current clips, set the loading text
-                // eslint-disable-next-line
                 if (newClips.length === getActiveClipsLength()) {
                     setIsLoading(false);
                     return;
                 }
-                setIsLoading(false);
                 setClips(newClips);
                 setCurrentItems(newClips.slice(0, 1));
+                setIsLoading(false);
             });
         };
 
         fetchClips();
 
-        // Set interval to fetch clips every 30 seconds
         if (!intervalRef.current)
             intervalRef.current = setInterval(fetchClips, 30000);
 
-        // Clear interval on component unmount
         return () => {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
