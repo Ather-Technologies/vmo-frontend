@@ -95,7 +95,6 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         }
 
         const fetchClips = () => {
-            setIsLoading(true); // Start loading before fetch
             apiInterface.getAllClipsByDateId(date_id).then((newClips: Clip[]) => {
                 if (!isMounted) return; // Prevent state update if component is unmounted
 
