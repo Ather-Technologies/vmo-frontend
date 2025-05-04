@@ -204,7 +204,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                                 {tone.name}
                             </span>
                             <span className="ml-1.5 text-gray-400 text-[10px]">
-                                {tone.frequencies.join("hz, ") + "hz"}
+                                {tone.frequencies.map(freq => `${freq}hz`).join(", ")}
                             </span>
                         </div>
                     ))}
