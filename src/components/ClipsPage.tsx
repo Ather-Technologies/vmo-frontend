@@ -20,9 +20,10 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const initialLoadRef = useRef(true);
     const currentPageRef = useRef<number>(1);
+    const prevDateIdRef = useRef<number | undefined>(undefined);
 
     // Shorthand the CDStateData values
-    const [clip_id, setClipID, date_id] = [CDStateData.clip_id, CDStateData.setClipID, CDStateData.date_id];
+    const [clip_id, setClipID, date_id] = [CDStateData.clip_id as number | null, CDStateData.setClipID as React.Dispatch<React.SetStateAction<number | null>>, CDStateData.date_id];
 
     const tableRowRef = useRef<HTMLTableRowElement>(null);
 
@@ -56,7 +57,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
 
     useEffect(() => {
         // If clips are loaded and no clip is selected, set the first clip
-        if (clips.length > 0 && (isNaN(clip_id) || initialLoadRef.current)) {
+        if (clips.length > 0 && (clip_id === null || initialLoadRef.current)) {
             const firstClipId = clips[0]?.id;
             setClipID(firstClipId);
             initialLoadRef.current = false;
@@ -64,7 +65,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
 
         // Fix for race condition
         if (clips.length === 0) {
-            setClipID(NaN);
+            setClipID(null);
             initialLoadRef.current = true;
         }
     }, [clips, clip_id, setClipID]);
@@ -75,8 +76,17 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
     }, [clips]);
 
     useEffect(() => {
-        setClipID(NaN);
-        initialLoadRef.current = true;
+        let isMounted = true; // Track if the component is mounted
+
+        // If the date_id changed, reset clip selection and loading state
+        if (prevDateIdRef.current !== date_id) {
+            setClipID(NaN);
+            setClips([]);
+            setCurrentItems([]);
+            setIsLoading(true);
+            initialLoadRef.current = true;
+            prevDateIdRef.current = date_id;
+        }
 
         if (!date_id) {
             setClips([]); // Clear clips if no date selected
@@ -87,6 +97,8 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
         const fetchClips = () => {
             setIsLoading(true); // Start loading before fetch
             apiInterface.getAllClipsByDateId(date_id).then((newClips: Clip[]) => {
+                if (!isMounted) return; // Prevent state update if component is unmounted
+
                 // if the clips are not a different length than the current clips, set the loading text
                 if (newClips.length === getActiveClipsLength()) {
                     setIsLoading(false);
@@ -104,8 +116,10 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
             intervalRef.current = setInterval(fetchClips, 30000);
 
         return () => {
+            isMounted = false;
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
+                intervalRef.current = null;
             }
         };
     }, [date_id, setClipID, apiInterface, getActiveClipsLength]);
