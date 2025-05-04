@@ -28,6 +28,12 @@ test("call getAllDatesBySourceId check for correct result", async () => {
   );
 });
 
+test("call getAllTonesBySourceId check for correct result", async () => {
+  expect(await api.getAllTonesBySourceId(1)).toEqual(
+    InterfaceForAPI_DemoData.getAllTonesBySourceId(1)
+  );
+});
+
 test("check api fetch parses data correctly", async () => {
   global.fetch = jest.fn(async () => {
     return {

@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
+// Define a consistent PaginationHandler interface
+interface PaginationHandler {
+    goToNextPage: () => boolean;
+    goToPrevPage: () => boolean;
+    currentPage: number;
+    totalPages: number;
+}
+
 interface PaginationProps {
     items: any[];
     setCurrentItems: React.Dispatch<React.SetStateAction<any[]>>;
@@ -223,7 +231,7 @@ function Pagination({
         setCurrentPage(totalPages);
     };
 
-    const goToNextPage = useCallback(() => {
+    const goToPrevPage = useCallback(() => {
         if (currentPage > 1) {
             setCurrentPage(prevPage => prevPage - 1);
             return true;
@@ -231,11 +239,20 @@ function Pagination({
         return false;
     }, [currentPage]);
 
+    const goToNextPage = useCallback(() => {
+        if (currentPage < totalPages) {
+            setCurrentPage(prevPage => prevPage + 1);
+            return true;
+        }
+        return false;
+    }, [currentPage, totalPages]);
+
     useEffect(() => {
         if (paginationTag) {
             window.vmoPagination = window.vmoPagination || {};
             window.vmoPagination[paginationTag] = {
                 goToNextPage,
+                goToPrevPage,
                 currentPage,
                 totalPages
             };
@@ -246,7 +263,7 @@ function Pagination({
                 delete window.vmoPagination[paginationTag];
             }
         };
-    }, [paginationTag, goToNextPage, currentPage, totalPages]);
+    }, [paginationTag, goToNextPage, goToPrevPage, currentPage, totalPages]);
 
     const renderPageNumbers = pageNumbers.map(number => (
         <li key={number} className="inline-block ml-1 mt-1">
@@ -344,11 +361,7 @@ function Pagination({
 declare global {
     interface Window {
         vmoPagination?: {
-            [key: string]: {
-                goToNextPage: () => boolean;
-                currentPage: number;
-                totalPages: number;
-            }
+            [key: string]: PaginationHandler;
         };
         showPaginationDebug?: boolean;
     }

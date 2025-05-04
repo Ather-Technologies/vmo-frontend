@@ -1,4 +1,4 @@
-import { ClipDate, Clip, FullClipDate } from './types';
+import { ClipDate, Clip, FullClipDate, Tone } from './types';
 import { InterfaceForAPI_DemoData } from './DemoData';
 
 // Interface for standardizing API calls
@@ -21,6 +21,10 @@ export default class API_Interface {
     // Fetch all dates that have a source id of sourceId.
     getAllDatesBySourceId = async (sourceId: number): Promise<ClipDate[]> =>
         process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getAllDatesBySourceId(sourceId) : (await this.makeApiFetch(`/dates/many/source_id/${sourceId}`));
+
+    // Fetch all tones for a specific source ID
+    getAllTonesBySourceId = async (sourceId: number): Promise<Tone[]> =>
+        process.env.REACT_APP_DEMO ? InterfaceForAPI_DemoData.getAllTonesBySourceId(sourceId) : (await this.makeApiFetch(`/tones/many/source_id/${sourceId}`));
 
     async makeApiFetch(url: string): Promise<any> {
         let result;

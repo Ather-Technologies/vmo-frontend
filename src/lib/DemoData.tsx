@@ -89,5 +89,17 @@ export const InterfaceForAPI_DemoData = {
 
         // Return all rows matching the condition
         return rows.filter(row => row.date_id === id).sort((a, b) => b.id - a.id);
+    },
+    getAllTonesBySourceId: (id: number) => {
+        const rows = [
+            { id: 1, name: "ambulance", color: "2a6ebb", frequencies: ["450", "503"], source_id: 1 },
+            { id: 2, name: "fire rescue", color: "CE2029", frequencies: ["450", "476"], source_id: 1 },
+            { id: 3, name: "police", color: "3366CC", frequencies: ["460", "490"], source_id: 1 },
+            { id: 4, name: "sheriff", color: "663399", frequencies: ["465", "470"], source_id: 1 },
+            { id: 5, name: "emergency", color: "FF9900", frequencies: ["455", "480"], source_id: 1 }
+        ];
+
+        // Return all rows matching the condition
+        return rows.filter(row => row.source_id === id);
     }
 }

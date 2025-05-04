@@ -18,6 +18,8 @@ export interface Clip {
     id: number; // Unique identifier for the clip
     time: string; // The time the clip was uploaded
     date_id: number; // The date_id of a row with the date of the clip in ISO format (YYYY-MM-DD)
+    tone_processed?: boolean; // Whether the clip has been processed for tones
+    tones_id?: number; // The ID of the tone assigned to this clip
 }
 
 export interface ClipSource {
@@ -25,6 +27,14 @@ export interface ClipSource {
     name: string // The name of the source
     shorthand: string // Abbreviation of the source name
     timezone: string // The IANA timezone of the source (e.g., 'America/New_York')
+}
+
+export interface Tone {
+    id: number;             // Unique identifier for the tone
+    name: string;           // Name of the tone (e.g., "ambulance", "fire rescue")
+    color: string;          // Hex color code (without # prefix)
+    frequencies: string[];  // Array of frequency values
+    source_id: number;      // The source this tone belongs to
 }
 
 // Represents the properties for the loading screen
