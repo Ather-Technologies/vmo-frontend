@@ -360,7 +360,9 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        {hasProcessedTones(clip) ? (() => {
+                                        {clip.tone_processed === false ? (
+                                            <span className="text-gray-500 text-sm">Not Checked</span>
+                                        ) : hasProcessedTones(clip) ? (() => {
                                             const clipTone = tones.find(t => t.id === clip.tones_id);
                                             return (
                                                 <div className="flex items-center">
