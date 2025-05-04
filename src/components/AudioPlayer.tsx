@@ -152,41 +152,6 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
         };
     }, [clip_id, setClipID, getNextClipKey, setIsPlaying, intervalRef]);
 
-    const handleTimeUpdate: any = () => {
-        if (audioRef.current) {
-            setCurrentTime(audioRef.current.currentTime);
-        }
-    };
-
-    // This should all be server side when added into the app
-    // useEffect(() => {
-    //     let plays_remaining = parseInt(cookies.plays_remaining);
-
-    //     // Make sure the payment param isn't there!
-    //     if (plays_remaining === 0 && !window.location.search.includes('p=1')) {
-    //         toast.error("You have no more plays remaining for today! Consider subscribing to get unlimited plays!");
-    //     } else if (plays_remaining) {
-    //         toast.success("You have " + plays_remaining + ` play${plays_remaining > 1 ? 's' : ''} remaining for today!`);
-    //     }
-
-    //     console.log('check cookie: ' + plays_remaining + ' ' + cookies.plays_remaining + ' ' + isPlaying);
-
-    //     removeCookie('plays_remaining', { path: '/' });
-
-    //     // Remove url params
-    //     window.history.replaceState({}, document.title, window.location.pathname);
-
-    // }, [clip_id]);
-
-    const handleLoadedMetadata = () => {
-        if (audioRef.current) {
-            setDuration(audioRef.current.duration);
-            audioRef.current.volume = 1; // Ensure volume is set to 100%
-            audioRef.current.play().catch(() => { toast.error("Please allow auto play for the site to work!") });
-            setIsLoading(false);
-        }
-    };
-
     const handleSeek = (event: React.MouseEvent<HTMLDivElement>) => {
         if (audioRef.current) {
             const barWidth = event.currentTarget.clientWidth;
@@ -202,25 +167,50 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
 
     useEffect(() => {
         const currentAudioRef = audioRef.current;
-        const handlePlay = () => setIsPlaying(true);
-        const handlePause = () => setIsPlaying(false);
+
+        const handlePlay = () => {
+            setIsPlaying(true);
+        };
+
+        const handlePause = () => {
+            setIsPlaying(false);
+        };
+
+        const handleTimeUpdate = () => {
+            if (currentAudioRef) {
+                setCurrentTime(currentAudioRef.currentTime);
+            }
+        };
+
+        const handleLoadedMetadata = () => {
+            if (currentAudioRef) {
+                setDuration(currentAudioRef.duration);
+                currentAudioRef.volume = 1; // Ensure volume is set to 100%
+                currentAudioRef.play().catch(() => {
+                    toast.error("Please allow auto play for the site to work!");
+                });
+                setIsLoading(false);
+            }
+        };
 
         if (currentAudioRef) {
-            currentAudioRef.addEventListener('timeupdate', handleTimeUpdate);
-            currentAudioRef.addEventListener('loadedmetadata', handleLoadedMetadata);
             currentAudioRef.addEventListener('play', handlePlay);
             currentAudioRef.addEventListener('pause', handlePause);
+            currentAudioRef.addEventListener('timeupdate', handleTimeUpdate);
+            currentAudioRef.addEventListener('loadedmetadata', handleLoadedMetadata);
             currentAudioRef.addEventListener('ended', handleEnd);
+        }
 
-            return () => {
-                currentAudioRef.removeEventListener('ended', handleEnd);
-                currentAudioRef.removeEventListener('timeupdate', handleTimeUpdate);
-                currentAudioRef.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        return () => {
+            if (currentAudioRef) {
                 currentAudioRef.removeEventListener('play', handlePlay);
                 currentAudioRef.removeEventListener('pause', handlePause);
-            };
-        }
-    }, [handleEnd]);
+                currentAudioRef.removeEventListener('timeupdate', handleTimeUpdate);
+                currentAudioRef.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                currentAudioRef.removeEventListener('ended', handleEnd);
+            }
+        };
+    }, [audioRef, handleEnd, setIsPlaying, setCurrentTime, setDuration, setIsLoading]);
 
     return (
         <div className="flex items-center">
