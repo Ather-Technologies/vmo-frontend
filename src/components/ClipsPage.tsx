@@ -257,20 +257,7 @@ function ClipsPage({ CDStateData }: ClipsPageProps) {
                                 </div>
                                 <span className="font-medium">{clip.time}</span>
                             </div>
-                            {hasProcessedTones(clip) && (() => {
-                                const clipTone = tones.find(t => t.id === clip.tones_id);
-                                return (
-                                    <span className="ml-2 inline-flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faCheckCircle}
-                                            className="text-xs"
-                                            style={{
-                                                color: `#${clipTone?.color || '4ADE80'}`
-                                            }}
-                                        />
-                                    </span>
-                                );
-                            })()}
+                            {renderTone(clip, tones, true)}
                         </div>
                         <div className="flex flex-wrap text-xs text-gray-400 space-x-4">
                             <div className="flex items-center">
