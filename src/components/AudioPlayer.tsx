@@ -59,6 +59,17 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
         return Number(document.querySelector(`[x-vmo-clipidx="${currentIndex - 1}"]`)?.id.split('-')[2]);
     }, [clip_id]);
 
+    // This function applies the visual highlight to the clip row
+    const applyVisualHighlight = useCallback((clipId: number) => {
+        const newRow = document.getElementById(`vmo-clip-${clipId}`);
+        if (newRow) {
+            // Apply the same CSS classes used in the ClipsPage for active clips
+            newRow.classList.add('bg-indigo-800/40');
+            newRow.classList.add('border-l-4');
+            newRow.classList.add('border-blue-500');
+        }
+    }, []);
+
     // This means the audio has ended
     const handleEnd = useCallback(() => {
         setIsPlaying(false);
@@ -144,7 +155,7 @@ function AudioPlayer({ CDStateData }: AudioPlayerProp) {
                 intervalRef.current = null;
             }
         };
-    }, [clip_id, setClipID, getNextClipKey, setIsPlaying, intervalRef]);
+    }, [clip_id, setClipID, getNextClipKey, setIsPlaying, intervalRef, applyVisualHighlight]);
 
     const handleSeek = (event: React.MouseEvent<HTMLDivElement>) => {
         if (audioRef.current) {
