@@ -62,6 +62,8 @@ function LoginAndRegistration({ setAuthState }: LoginAndRegistrationProps) {
                                         <p className="text-green-200">
                                             <span className="font-bold">Latest Updates:</span>
                                             <br></br>
+                                            <span className="font-semibold">05/03/2025:</span> Added agency tone detection that will show if ambulance or fire were paged in the clips visually.
+                                            <br></br>
                                             <span className="font-semibold">04/23/2025:</span> Massive UI overhaul, performance fixes, mobile improvements, and more!
                                             <br></br>
                                             <span className="font-semibold">04/22/2025:</span> Pages now automatically advance when you finish listening to the oldest clip.
